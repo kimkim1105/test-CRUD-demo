@@ -52,8 +52,7 @@
             <td th:utext="${student.id}"></td>
             <td th:utext="${student.name}"></td>
             <td><a th:href="@{/students/findById/(id=${student.id})}" class="btn btn-primary">Edit</a></td>
-            <td><a th:href="@{/students/findById/(id=${student.id})}" class="btn btn-danger">Delete</a></td>
-<!--            <td><a th:href="@{/students/deleteStudent/{id}(id=${student.id})}">Delete</a></td>-->
+            <td><a th:href="@{/students/findById/(id=${student.id})}" class="btn btn-danger" id="deleteButton">Delete</a></td>
         </tr>
         </tbody>
     </table>
@@ -105,7 +104,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="edit-student-info">
                     <div class="form-group">
 <!--                        <label class="col-form-label">Name:</label>-->
                         <input type="text" hidden  id="student-id" class="form-control"  th:field="*{id}" th:value="${student.id}">
@@ -121,29 +120,89 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="edit-student-confirm" onclick="reloadpage()">Update</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
+<!-- delete student Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form th:action="@{/students/deleteStudent}"
+              th:object="${student}" method="put">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete student confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="delete-student-info">
+                Are you sure to delete?
+                <div class="form-group">
+                    <!--                        <label class="col-form-label">Name:</label>-->
+                    <input type="text" hidden  id="student-id1" class="form-control"  th:field="*{id}" th:value="${student.id}">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Name:</label>
+                    <p th:field="*{name}"  id="student-name1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Close</button>
+                <button type="submit" class="btn btn-danger" id="delete-student-confirm" onclick="reloadpage()">Delete</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
 
 
 <th:block th:replace="share/footer :: footer"></th:block>
 <script>
+    function reloadpage(){
+        window.location.reload();
+    }
     $(document).ready(function (){
-        console.log("get dduojwc gif k")
         $('.table .btn-primary').on('click',function (event){
             event.preventDefault();
             var  href = $(this).attr('href');
             $.get(href,function (student, status){
-                $('#student-id').val(student.id);
-                $('#student-name').val(student.name);
-                // console.log("name ==="+student.id)
+                var  link = "http://localhost:8080/students/listStudentInBorrow?id=" + student.id;
+                $.get(link,function (check, status){
+                    if (check){
+                        console.log(" vao duoc if k")
+                        $('#edit-student-info').html("Student is in borrowing, can't edit");
+                        $('#edit-student-confirm').hide();
+                    }else {
+                        $('#student-id').val(student.id);
+                        $('#student-name').val(student.name);
+                        // console.log("name ==="+student.id)
+                    }
+                })
             })
             $('#editModal').modal();
+        })
+        $('.table .btn-danger').on('click',function (event){
+            event.preventDefault();
+            var  href = $(this).attr('href');
+            $.get(href,function (student, status){
+                var  link = "http://localhost:8080/students/listStudentInBorrow?id=" + student.id;
+                $.get(link,function (check, status){
+                    if (check){
+                        console.log(" vao duoc if k")
+                        $('#delete-student-info').html("Student is in borrowing, can't edit");
+                        $('#delete-student-confirm').hide();
+                    }else {
+                $('#student-id1').val(student.id);
+                $('#student-name1').html(student.name);
+                // console.log("name ==="+student.id)
+                    }
+                })
+            })
+            $('#deleteModal').modal();
         })
     })
 </script>
