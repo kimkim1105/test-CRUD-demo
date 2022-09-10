@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<th:block th:replace="share/header :: header"></th:block>
+
+<div>
+    <h3 class="text-center text-white pt-5">Add Book info</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div style="border-radius: 20px" id="login-box" class="col-md-12">
+                    <div id="login-form" class="form">
+                        <h3 class="text-center text-info">Book Info</h3>
+                        <form th:action="@{/books/addBook}"
+                              th:object="${book}" method="POST">
+                            <div class="form-group">
+                                <label class="text-info">Name:</label><br>
+                                <p style="color: red" th:if="${mess}" th:utext="${mess}"></p>
+                                <input type="text" th:field="*{name}" class="form-control">
+                            </div>
+                            <!--                        <div class="form-group">-->
+                            <!--                            <label for="password" class="text-info">Password:</label><br>-->
+                            <!--                            <input type="password" name="password" id="password" class="form-control">-->
+                            <!--                        </div>-->
+                            <div class="form-group">
+                                <br>
+                                <!--                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>-->
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="share/footer :: footer"></th:block>
+<form th:action="@{/books/addBook}"
+      th:object="${book}" method="POST">
+    <br/>
+    <p th:if="${mess}" th:utext="${mess}"></p>
+    Name:
+    <input type="text" th:field="*{name}" />
+    <br/>
+    <input type="submit" value="Create" />
+</form>
+<a th:href="@{/books}">bookList</a>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

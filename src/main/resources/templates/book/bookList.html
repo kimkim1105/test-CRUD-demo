@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<!--<a th:href="@{/index}">Back</a>-->
+<!--<a th:href="@{/books/addBook}">addBook</a>-->
+<!--<form action="">-->
+<!--    <input type="text" placeholder="search by name" name="search">-->
+<!--</form>-->
+<th:block th:replace="share/header :: header"></th:block>
+<div class="container" th:fragment="content">
+    <div>
+        <h1 style="text-align: center; margin: 0">Manage book Information</h1>
+    </div>
+    <hr>
+    <span style="color: red; margin-top:5px" id="validate"></span>
+    <br>
+    <br>
+
+    <table class="table table-striped">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search by name"  aria-label="Search">
+        </form>
+        <thead>
+        <th colspan="4">Book Information</th>
+        <th></th>
+        <th>
+            <a th:href="@{/books/addBook}" class="btn btn-success active" role="button" aria-pressed="true">Add new Book</a>
+        </th>
+        </thead>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th colspan="2" scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody id="drawTable">
+        <tr th:each ="book, b : ${books}">
+            <td th:utext="${b.index+1}"></td>
+            <td th:utext="${book.name}"></td>
+            <td><a th:href="@{/books/updateBook/{id}(id=${book.id})}">Edit</a></td>
+            <td><a th:href="@{/books/deleteBook/{id}(id=${book.id})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--    <div>-->
+    <!--        <button class="btn btn-danger btn-danger-clearall" onclick="deleteAll()" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Clear All</button>-->
+    <!--    </div>-->
+</div>
+<th:block th:replace="share/footer :: footer"></th:block>
+<!--<div>-->
+<!--    <table border="1">-->
+<!--        <tr>-->
+<!--            <th>STT</th>-->
+<!--            <th>Name</th>-->
+<!--            <th>Edit</th>-->
+<!--            <th>Delete</th>-->
+<!--        </tr>-->
+<!--        <tr th:each ="book, b : ${books}">-->
+<!--            <td th:utext="${b.index+1}"></td>-->
+<!--            <td th:utext="${book.name}"></td>-->
+<!--            <td><a th:href="@{/books/updateBook/{id}(id=${book.id})}">Edit</a></td>-->
+<!--            <td><a th:href="@{/books/deleteBook/{id}(id=${book.id})}">Delete</a></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

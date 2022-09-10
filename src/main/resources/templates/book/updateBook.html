@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Book</title>
+</head>
+<body>
+<form th:action="@{/books/updateBook/{id}(id=${book.id})}"
+      th:object="${book}" method="POST">
+    <br/>
+    <p th:if="${mess}" th:utext="${mess}"></p>
+    Name:
+    <input type="text" id="bookname" th:field="*{name}" th:oninput="getname()" />
+    <br/>
+    <input type="submit" value="Update"
+           th:data-confirm-update="|Are you sure you want to update this book with id ${book.id} by new name ?|"
+           onclick="return confirm(this.getAttribute('data-confirm-update'))"
+    />
+</form>
+<a th:href="@{/books}">bookList</a>
+</body>
+</html>
+<script th:inline="javascript">
+    let bkname;
+    function getname(){
+        bkname = document.getElementById("bookname").value;
+        console.log(bkname)
+    }
+
+</script>

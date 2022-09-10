@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/borrowbooks}">Back</a>
+<form action="">
+    <input type="text" placeholder="search by name" name="search">
+</form>
+<div>
+    <table border="1">
+        <tr>
+            <th>STT</th>
+            <th>Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each ="book, b : ${books}">
+            <td th:utext="${b.index+1}"></td>
+            <td th:utext="${book.name}"></td>
+            <td><a th:href="@{/books/updateBook/{id}(id=${book.id})}">Edit</a></td>
+            <td><a th:href="@{/books/deleteBook/{id}(id=${book.id})}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

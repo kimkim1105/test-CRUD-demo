@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<th:block th:replace="share/header :: header"></th:block>
+<div class="container" th:fragment="content">
+    <div>
+        <h1 style="text-align: center; margin: 0">Manage borrow book order</h1>
+    </div>
+    <hr>
+    <!--    <div class="inputField">-->
+    <!--        <textarea class="items" id="items" placeholder="Enter New Task"></textarea>-->
+    <!--        <button type="button" class="btn btn-primary btn-primary-addsearch" onclick="createTask()">Add</button>-->
+    <!--    </div>-->
+    <span style="color: red; margin-top:5px" id="validate"></span>
+    <br>
+    <!--    <div class="searchField">-->
+    <!--        <textarea id="search" placeholder="Search Here"></textarea>-->
+    <!--        <button type="button" class="btn btn-primary btn-primary-addsearch" onclick="actionSearch()">Search</button>-->
+    <!--    </div>-->
+    <br>
+    <table class="table table-striped">
+        <thead>
+        <th colspan="4">Order Information</th>
+        </thead>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Book</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each ="borrow, b : ${borrowbooks}">
+            <td th:utext="${b.index+1}"></td>
+            <td th:utext="${borrow.student.name}"></td>
+            <td th:utext="${borrow.book.name}"></td>
+            <td th:utext="${borrow.date}"></td>
+            <td><a th:href="@{borrowbooks/deleteOrder/{id}(id=${borrow.id})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--    <div>-->
+    <!--        <button class="btn btn-danger btn-danger-clearall" onclick="deleteAll()" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Clear All</button>-->
+    <!--    </div>-->
+</div>
+<th:block th:replace="share/footer :: footer"></th:block>
+
+<div>
+    <a th:href="@{/index}">Back</a>
+    <a th:href="@{/borrowbooks/addOrder}">add Order</a>
+    <a th:href="@{/books/bookFree}">List Book can borrow</a>
+    <a th:href="@{/books/bookBorrowed}">List book borrowed</a>
+    <!--<a th:href="@{/borrowbooks/addOrder}">add Order</a>-->
+    <!--<form action="">-->
+    <!--    <input type="text" placeholder="search by student or book" name="search">-->
+    <!--</form>-->
+    <div >
+        <table border="1">
+            <tr>
+                <th>STT</th>
+                <th>Student Name</th>
+                <th>Book</th>
+                <th>Date</th>
+                <th>Active</th>
+            </tr>
+            <tr th:each ="borrow, b : ${borrowbooks}">
+                <td th:utext="${b.index+1}"></td>
+                <td th:utext="${borrow.student.name}"></td>
+                <td th:utext="${borrow.book.name}"></td>
+                <td th:utext="${borrow.date}"></td>
+                <td><a th:href="@{borrowbooks/deleteOrder/{id}(id=${borrow.id})}">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

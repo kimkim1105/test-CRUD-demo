@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Order</title>
+</head>
+<body>
+<form th:action="@{/borrowbooks/addOrder}"
+      method="POST">
+    <br/>
+    <p th:if="${mess}" th:utext="${mess}"></p>
+    Student Id
+    <input type="text" name="studentId" />
+    Book Id
+    <input type="text" name="bookId" />
+    <br/>
+    <input type="submit" value="Create" />
+</form>
+<a th:href="@{/borrowbooks}">Order List</a>
+</body>
+</html>

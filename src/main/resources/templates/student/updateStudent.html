@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Student</title>
+</head>
+<body>
+<form th:action="@{/students/updateStudent/{id}(id=${student.id})}"
+      th:object="${student}" method="put">
+    <br/>
+    <p th:if="${mess}" th:utext="${mess}"></p>
+    Name:
+    <input type="text" th:field="*{name}" />
+    <br/>
+    <input type="submit" value="Update"
+           th:data-confirm-update="|Are you sure you want to update this student with id ${student.id} by new name ?|"
+           onclick="return confirm(this.getAttribute('data-confirm-update'))"
+    />
+</form>
+<a th:href="@{/students}">studentList</a>
+</body>
+</html>
