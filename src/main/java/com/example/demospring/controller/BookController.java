@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -17,6 +18,8 @@ public class BookController {
     IBookService bookService;
     @GetMapping
     public String getBookList(Model model, @RequestParam(required = false, name = "search") String search){
+        Book book = new Book();
+        model.addAttribute("book", book);
         try {
             if (!search.isEmpty()&&search!=null){
                 model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrue(search));
@@ -72,56 +75,45 @@ public class BookController {
             return "book/addBook";
         }
     }
-    @GetMapping("/addBook")
-    public String addBookForm(Model model){
-        Book book = new Book();
-        model.addAttribute("book", book);
-        return "book/addBook";
-    }
-    @GetMapping("/updateBook/{id}")
-    public String updateBookForm(Model model, @PathVariable Long id){
-        Book book = bookService.findById(id).get();
-        model.addAttribute("book", book);
-        return "book/updateBook";
-    }
-    @PostMapping("/updateBook/{id}")
-    public String updateBook(Model model, @ModelAttribute Book book){
+    @RequestMapping("/listBookInBorrow")
+    @ResponseBody
+    public Boolean getListInBorrow(Long id) {
         List<Book> bookList = (List<Book>) bookService.getListBookInBorrow();
-        if (bookList.contains(bookService.findById(book.getId()).get())){
-            Book book1 = bookService.findById(book.getId()).get();
-            model.addAttribute("book", book1);
-            model.addAttribute("mess","Book is in borrowing, can't edit");
-            return "book/updateBook";
+        if (bookList.contains(bookService.findById(id ).get())) {
+            return true;
         }
+        return false;
+    }
+    @RequestMapping("/findById")
+    @ResponseBody
+    public Optional<Book> updateBookForm(Long id, Model model) {
+        Optional<Book> book = bookService.findById(id);
+        return book;
+    }
+//    @GetMapping("/updateBook/{id}")
+//    public String updateBookForm(Model model, @PathVariable Long id){
+//        Book book = bookService.findById(id).get();
+//        model.addAttribute("book", book);
+//        return "book/updateBook";
+//    }
+    @RequestMapping(value = "/updateBook", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateBook(Model model, @ModelAttribute Book book){
         if (book!=null&&!book.getName().isEmpty()){
             book.setStatus(bookService.findById(book.getId()).get().isStatus());
             bookService.save(book);
             model.addAttribute("books", bookService.findAllByStatusIsTrue());
-            return "book/bookList";
+            return "redirect:/books";
         }else {
             model.addAttribute("mess","Name not valid");
-            return "book/updateBook";
+            return "redirect:/books";
         }
     }
-    @GetMapping("/deleteBook/{id}")
-    public String deleteBookForm(Model model, @PathVariable Long id){
-        Book book = bookService.findById(id).get();
-        model.addAttribute("book", book);
-        return "book/deleteBook";
-    }
-    @PostMapping("/deleteBook/{id}")
-    public String deleteBook( @PathVariable Long id, Model model){
-        Book book = bookService.findById(id).get();
-        List<Book> bookList = (List<Book>) bookService.getListBookInBorrow();
-        if (bookList.contains(bookService.findById(book.getId()).get())){
-            model.addAttribute("book", book);
-            model.addAttribute("mess","Book is in borrowing, can't edit");
-            return "book/deleteBook";
-        }
-        book.setStatus(!book.isStatus());
-        bookService.save(book);
-//        bookService.findById(id).get().setStatus(!bookService.findById(id).get().isStatus());
+    @RequestMapping(value = "/deleteBook", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String deleteBook(Model model, @ModelAttribute Book book){
+        Book book1 = bookService.findById(book.getId()).get();
+        book1.setStatus(false);
+        bookService.save(book1);
         model.addAttribute("books", bookService.findAllByStatusIsTrue());
-        return "book/bookList";
+        return "redirect:/books";
     }
 }
