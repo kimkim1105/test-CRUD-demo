@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/borrowbooks")
@@ -26,7 +27,9 @@ public class BorrowBookController {
     IStudentService studentService;
     @GetMapping
     public String getListBorrowBook(Model model){
-        model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrue());
+        BorrowBook order = new BorrowBook();
+        model.addAttribute("order", order);
+        model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
         return "borrow/borrowList";
     }
     @GetMapping("/addOrder")
@@ -50,44 +53,50 @@ public class BorrowBookController {
                 order.setStudent(studentService.findById(Long.valueOf(studentId)).get());
                 order.setDate(LocalDate.now());
                 borrowBookService.save(order);
-                model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrue());
+                model.addAttribute("mess","Add new order success");
+                model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
                 return "borrow/borrowList";
             }else {
                 model.addAttribute("mess","Book Id or Student Id was borrow or not valid");
-                return "borrow/addOrder";
+                model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
+                return "borrow/borrowList";
             }
         }else {
             model.addAttribute("mess","Book Id and Student Id are nesscessary");
-            return "borrow/addOrder";
+                model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
+                return "borrow/borrowList";
         }
         }
         catch (Exception e){
+            model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
             model.addAttribute("mess","Book Id and Student Id are nesscessary");
-            return "borrow/addOrder";
+            return "borrow/borrowList";
         }
     }
-    @GetMapping("/deleteOrder/{id}")
-    public String deleteOrderForm(Model model, @PathVariable Long id){
-        BorrowBook order = borrowBookService.findById(id).get();
-        model.addAttribute("order", order);
-        return "borrow/deleteOrder";
+    @RequestMapping("/findById")
+    @ResponseBody
+    public Optional<BorrowBook> updateBorrowForm(Long id) {
+        Optional<BorrowBook> order = borrowBookService.findById(id);
+        return order;
     }
-    @PostMapping("/deleteOrder/{id}")
-    public String deleteOrder( @PathVariable Long id, Model model, @ModelAttribute BorrowBook order){
-        BorrowBook order1 = borrowBookService.findById(id).get();
+    @RequestMapping("/listOrderCompleted")
+    @ResponseBody
+    public Boolean getOrderCompleted(Long id) {
         List<BorrowBook> orderList = (List<BorrowBook>) borrowBookService.getOrderCompleted();
-        if (orderList.contains(borrowBookService.findById(order1.getId()).get())){
-            model.addAttribute("order", order1);
-            model.addAttribute("mess","Order is completed, can't edit");
-            return "borrow/deleteOrder";
+        if (orderList.contains(borrowBookService.findById(id).get())){
+            return true;
         }
-//        order.setStudent(order1.getStudent());
-//        order.setBook(order1.getBook());
-        order1.setStatus(!order1.isStatus());
+        return false;
+    }
+    @RequestMapping(value = "/deleteOrder", method = {RequestMethod.PUT, RequestMethod.GET})
+//    @PostMapping("/deleteOrder")
+    public String deleteOrder(Model model, @ModelAttribute BorrowBook order){
+        BorrowBook order1 = borrowBookService.findById(order.getId()).get();
+        order1.setStatus(false);
         order1.setNote(order.getNote());
         borrowBookService.save(order1);
-        model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrue());
-        return "borrow/borrowList";
+        model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc());
+        return "redirect:/borrowbooks";
     }
 
 }

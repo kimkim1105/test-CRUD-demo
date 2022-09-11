@@ -32,8 +32,8 @@ borrowBookRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<BorrowBook> findAllByStatusIsTrue() {
-        return borrowBookRepository.findAllByStatusIsTrue();
+    public Iterable<BorrowBook> findAllByStatusIsTrueOrderByDateDesc() {
+        return borrowBookRepository.findAllByStatusIsTrueOrderByDateDesc();
     }
 
     @Override

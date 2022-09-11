@@ -1,27 +1,320 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        @media screen and (max-width: 480px) {
+            .admin-sidebar {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 480px) {
+            .admin-tabs {
+                display: none;
+            }
+        }
+
+        .admin-sidebar {
+            max-width: 13%;
+        }
+
+        #sidebar-admin {
+            position: fixed;
+        }
+
+        .admin-sidebar-item {
+            padding: 1em;
+            border-bottom: 1px solid white;
+        }
+
+        .admin-nav {
+            background: #49C2B3;
+        }
+
+        .admin-nav-item {
+            color: white;
+            font-weight: bold;
+        }
+
+        .admin-nav-item:hover {
+            color: white;
+            background: #41aea1;
+        }
+
+        .admin-nav-item.active {
+            background: #53FFE7 !important;
+            color: white !important;
+        }
+
+        .admin-header-block {
+            background: #434449;
+            color: white !important;
+            text-align: left;
+            padding: 20px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-color: #ddd;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .admin-filter-button {
+            background: #78B404;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .admin-user-card {
+            margin-bottom: 10px;
+        }
+
+
+    </style>
 </head>
 <body>
 <th:block th:replace="share/header :: header"></th:block>
-<div class="container" th:fragment="content">
+
+<div class="row">
+    <div class="col-sm-2 admin-sidebar">
+        <div class="nav flex-column nav-pills text-center text-uppercase admin-nav" id="sidebar-admin" role="tablist"
+             aria-orientation="vertical">
+            <a class="nav-link active show admin-nav-item admin-sidebar-item" data-toggle="pill"
+               href="#manage-borrow-order" role="tab" aria-controls="admin-communicate"
+               aria-selected="true">Manage Order</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-requests" role="tab"
+               aria-controls="admin-requests" aria-selected="false">Requests</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-users" role="tab"
+               aria-controls="admin-users" aria-selected="false">Users</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-groups" role="tab"
+               aria-controls="admin-groups" aria-selected="false">Groups</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-analytics" role="tab"
+               aria-controls="admin-analytics" aria-selected="false">Analytics</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-messages" role="tab"
+               aria-controls="admin-messages" aria-selected="false">Messages</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-sessions" role="tab"
+               aria-controls="admin-sessions" aria-selected="false">Sessions</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-testimonials"
+               role="tab" aria-controls="admin-testimonials" aria-selected="false">Testimonials</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-changelog" role="tab"
+               aria-controls="admin-changelog" aria-selected="false">Changelog</a>
+        </div>
+    </div>
+    <!--    <div class="col-sm-12 admin-tabs">-->
+    <!--        <ul class="nav nav-tabs admin-nav text-uppercase" role="tablist">-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item active" data-toggle="tab" href="#admin-communicate" role="tab" aria-controls="admin-communicate" aria-selected="true">Communicate</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-requests" role="tab" aria-controls="admin-requests" aria-selected="false">Requests</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-users" role="tab" aria-controls="admin-users" aria-selected="false">Users</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-groups" role="tab" aria-controls="admin-groups" aria-selected="false">Groups</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-analytics" role="tab" aria-controls="admin-analytics" aria-selected="false">Analytics</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-messages" role="tab" aria-controls="admin-messages" aria-selected="false">Messages</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-sessions" role="tab" aria-controls="admin-sessions" aria-selected="false">Sessions</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-testimonials" role="tab" aria-controls="admin-testimonials" aria-selected="false">Testimonials</a>-->
+    <!--            </li>-->
+    <!--            <li class="nav-item">-->
+    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-changelog" role="tab" aria-controls="admin-changelog" aria-selected="false">Changelog</a>-->
+    <!--            </li>-->
+    <!--        </ul>-->
+    <!--    </div>-->
+    <!--    <div class="col-sm-10">-->
+    <!--        <div class="tab-content">-->
+    <!--            <div class="tab-pane fade active show" id="admin-communicate" role="tabpanel" aria-labelledby="admin-communicate-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Communicate</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <nav class="navbar">-->
+    <!--                    <form class="form-inline col-sm-12">-->
+    <!--                        <div class="col-sm-3">-->
+    <!--                            <select class="custom-select">-->
+    <!--                                <option value="1">One</option>-->
+    <!--                                <option value="2">Two</option>-->
+    <!--                                <option value="3">Three</option>-->
+    <!--                            </select>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-sm-3"><input class="form-control mr-sm-2" type="search" placeholder="First Name" aria-label="first" style="width: 100%;"></div>-->
+    <!--                        <div class="col-sm-3"><input class="form-control mr-sm-2" type="search" placeholder="Last Name" aria-label="last" style="width: 100%;"></div>-->
+    <!--                        <div class="col-sm-3">-->
+    <!--                            <ul class="nav nav-pills nav-fill">-->
+    <!--                                <li class="nav-item">-->
+    <!--                                    <a class="nav-link admin-filter-button text-uppercase" href="#">Filter</a>-->
+    <!--                                </li>-->
+    <!--                            </ul>-->
+    <!--                        </div>-->
+    <!--                    </form>-->
+    <!--                </nav>-->
+    <!--                <p>Communicate</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-requests" role="tabpanel" aria-labelledby="admin-requests-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Requests (ACTIVE TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Requests</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-users" role="tabpanel" aria-labelledby="admin-users-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Users (TOTAL TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <div class="container mt-4 mb-5">-->
+    <!--                    <div class="row">-->
+    <!--                        <div class="col-md-4">-->
+    <!--                            <div class="card text-center admin-user-card">-->
+    <!--                                <div class="card-header">Account Type</div>-->
+    <!--                                <div class="card-block p-3">-->
+    <!--                                    <h4 class="card-title">Name</h4>-->
+    <!--                                    <p class="card-text">Information</p>-->
+    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-md-4">-->
+    <!--                            <div class="card text-center admin-user-card">-->
+    <!--                                <div class="card-header">Account Type</div>-->
+    <!--                                <div class="card-block p-3">-->
+    <!--                                    <h4 class="card-title">Name</h4>-->
+    <!--                                    <p class="card-text">Information</p>-->
+    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-md-4">-->
+    <!--                            <div class="card text-center admin-user-card">-->
+    <!--                                <div class="card-header">Account Type</div>-->
+    <!--                                <div class="card-block p-3">-->
+    <!--                                    <h4 class="card-title">Name</h4>-->
+    <!--                                    <p class="card-text">Information</p>-->
+    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-md-4">-->
+    <!--                            <div class="card text-center admin-user-card">-->
+    <!--                                <div class="card-header">Account Type</div>-->
+    <!--                                <div class="card-block p-3">-->
+    <!--                                    <h4 class="card-title">Name</h4>-->
+    <!--                                    <p class="card-text">Information</p>-->
+    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-md-4">-->
+    <!--                            <div class="card text-center admin-user-card">-->
+    <!--                                <div class="card-header">Account Type</div>-->
+    <!--                                <div class="card-block p-3">-->
+    <!--                                    <h4 class="card-title">Name</h4>-->
+    <!--                                    <p class="card-text">Information</p>-->
+    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                &lt;!&ndash; Card &ndash;&gt;-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-groups" role="tabpanel" aria-labelledby="admin-groups-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Groups (TOTAL TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Groups</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-analytics" role="tabpanel" aria-labelledby="admin-analytics-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Analytics</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Analytics</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-messages" role="tabpanel" aria-labelledby="admin-messages-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Messages (TOTAL TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Messages</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-sessions" role="tabpanel" aria-labelledby="admin-sessions-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Sessions (TOTAL TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Sessions</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-testimonials" role="tabpanel" aria-labelledby="admin-testimonials-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Sessions (TOTAL WRITTEN TODO)</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Testimonials</p>-->
+    <!--            </div>-->
+    <!--            <div class="tab-pane fade" id="admin-changelog" role="tabpanel" aria-labelledby="admin-changelog-tab">-->
+    <!--                <ul class="nav nav-pills nav-fill">-->
+    <!--                    <li class="nav-item">-->
+    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Changelog</a></h4>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--                <p>Changelog</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+<br><br>
+<div class="container" th:fragment="content" id="manage-borrow-order">
     <div>
         <h1 style="text-align: center; margin: 0">Manage borrow book order</h1>
     </div>
     <hr>
-<!--    <div class="inputField">-->
-<!--        <textarea class="items" id="items" placeholder="Enter New Task"></textarea>-->
-<!--        <button type="button" class="btn btn-primary btn-primary-addsearch" onclick="createTask()">Add</button>-->
-<!--    </div>-->
+    <nav class="navbar">
+        <form class="form-inline col-sm-12"  th:action="@{/borrowbooks/addOrder}"
+              method="POST">
+            <div  class="col-sm-12"><p style="color: red" th:if="${mess}" th:utext="${mess}"></p></div>
+            <div class="col-sm-4"><input class="form-control mr-sm-2"  type="text" name="studentId" placeholder="Student Id"
+                                         aria-label="first" style="width: 100%;"></div>
+            <div class="col-sm-4"><input class="form-control mr-sm-2"  type="text" name="bookId" placeholder="Book Id"
+                                         aria-label="last" style="width: 100%;"></div>
+            <div class="col-sm-4">
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item">
+                        <button class="nav-link admin-filter-button text-uppercase" type="submit">Create</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </nav>
     <span style="color: red; margin-top:5px" id="validate"></span>
-    <br>
-<!--    <div class="searchField">-->
-<!--        <textarea id="search" placeholder="Search Here"></textarea>-->
-<!--        <button type="button" class="btn btn-primary btn-primary-addsearch" onclick="actionSearch()">Search</button>-->
-<!--    </div>-->
     <br>
     <table class="table table-striped">
         <thead>
@@ -37,49 +330,101 @@
         </tr>
         </thead>
         <tbody id="drawTable">
-        <tr th:each ="borrow, b : ${borrowbooks}">
+        <tr th:each="borrow, b : ${borrowbooks}">
             <td th:utext="${b.index+1}"></td>
             <td th:utext="${borrow.student.name}"></td>
             <td th:utext="${borrow.book.name}"></td>
             <td th:utext="${borrow.date}"></td>
-            <td><a th:href="@{borrowbooks/deleteOrder/{id}(id=${borrow.id})}">Delete</a></td>
+            <td><a th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
         </tbody>
     </table>
-<!--    <div>-->
-<!--        <button class="btn btn-danger btn-danger-clearall" onclick="deleteAll()" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Clear All</button>-->
-<!--    </div>-->
 </div>
+
+<!-- delete order Modal -->
+<div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form th:action="@{/borrowbooks/deleteOrder}"
+              th:object="${order}" method="put">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete order confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="delete-order-info">
+                    Are you sure to delete?
+                    <div class="form-group">
+                        <!--                        <label class="col-form-label">Name:</label>-->
+                        <input type="text" hidden  id="order-id" class="form-control"  th:field="*{id}" th:value="${order.id}">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Student Name:</label>
+                        <p th:field="*{student}"  id="order-student-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Book Name:</label>
+                        <p th:field="*{book}"  id="order-book-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Date:</label>
+                        <p th:field="*{date}"  id="order-date">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Note:</label>
+                        <input type="text" th:field="*{note}" id="order-note" th:required="required">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Close</button>
+                    <button type="submit" class="btn btn-danger" id="delete-order-confirm" onclick="reloadpage()">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <th:block th:replace="share/footer :: footer"></th:block>
 
-<div>
-<a th:href="@{/index}">Back</a>
-<a th:href="@{/borrowbooks/addOrder}">add Order</a>
-<a th:href="@{/books/bookFree}">List Book can borrow</a>
-<a th:href="@{/books/bookBorrowed}">List book borrowed</a>
+<!--<div>-->
+<!--<a th:href="@{/index}">Back</a>-->
 <!--<a th:href="@{/borrowbooks/addOrder}">add Order</a>-->
-<!--<form action="">-->
-<!--    <input type="text" placeholder="search by student or book" name="search">-->
-<!--</form>-->
-<div >
-    <table border="1">
-        <tr>
-            <th>STT</th>
-            <th>Student Name</th>
-            <th>Book</th>
-            <th>Date</th>
-            <th>Active</th>
-        </tr>
-        <tr th:each ="borrow, b : ${borrowbooks}">
-            <td th:utext="${b.index+1}"></td>
-            <td th:utext="${borrow.student.name}"></td>
-            <td th:utext="${borrow.book.name}"></td>
-            <td th:utext="${borrow.date}"></td>
-            <td><a th:href="@{borrowbooks/deleteOrder/{id}(id=${borrow.id})}">Delete</a></td>
-        </tr>
-    </table>
-</div>
-</div>
+<!--<a th:href="@{/books/bookFree}">List Book can borrow</a>-->
+<!--<a th:href="@{/books/bookBorrowed}">List book borrowed</a>-->
+
+<!--</div>-->
+<script>
+    function reloadpage(){
+        window.location.reload();
+    }
+    $(document).ready(function (){
+        $('.table .btn-danger').on('click',function (event){
+            event.preventDefault();
+            var  href = $(this).attr('href');
+            $.get(href,function (order, status){
+                var  link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                $.get(link,function (check, status){
+                    if (check){
+                        // console.log(" vao duoc if k")
+                        $('#delete-order-info').html("Order completed, can't edit");
+                        $('#delete-order-confirm').hide();
+                    }else {
+                        $('#order-id').val(order.id);
+                        console.log("id laf bn", order.id)
+                        // $('#order-student-name').val(order.student);
+                        // $('#order-book-name').val(order.book);
+                        // $('#order-dat').val(order.date);
+                        $('#order-student-name').html(order.student.name);
+                        $('#order-book-name').html(order.book.name);
+                        $('#order-date').html(order.date);
+                    }
+                })
+            })
+            $('#deleteOrderModal').modal();
+        })
+    })
+</script>
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>

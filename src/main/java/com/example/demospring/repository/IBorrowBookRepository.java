@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IBorrowBookRepository extends JpaRepository<BorrowBook,Long> {
-    Iterable<BorrowBook> findAllByStatusIsTrue();
+    Iterable<BorrowBook> findAllByStatusIsTrueOrderByDateDesc();
     @Query(value = "select * from borrowbooks where status = true and date not between (select adddate(curdate(),-3)) and curdate()",nativeQuery = true)
     Iterable<BorrowBook> getOrderCompleted();
 }
