@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface IStudentService extends IGeneralService<Student> {
     Iterable<Student> getListFreeStudent();
     Iterable<Student> getListStudentInBorrow();
-    Iterable<Student> findAllByStatusIsTrue();
-    Iterable<Student> findAllByNameContainingAndStatusIsTrue(String name);
+    Iterable<Student> findAllByStatusIsTrueOrderByIdDesc();
+    Iterable<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name);
     Boolean checkStudentInBorrow(Student student);
 }

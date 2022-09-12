@@ -22,14 +22,14 @@ public class BookController {
         model.addAttribute("book", book);
         try {
             if (!search.isEmpty()&&search!=null){
-                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrue(search));
+                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search));
                 return "book/bookList";
             }else {
-                model.addAttribute("books", bookService.findAllByStatusIsTrue());
+                model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
                 return "book/bookList";
             }
         }catch (Exception e){
-            model.addAttribute("books", bookService.findAllByStatusIsTrue());
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
             return "book/bookList";
         }
     }
@@ -39,7 +39,7 @@ public class BookController {
         if (book.getName()!=null&&!book.getName().isEmpty()){
             book.setStatus(true);
             bookService.save(book);
-            model.addAttribute("books", bookService.findAllByStatusIsTrue());
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
             return "book/bookList";
         }else {
             model.addAttribute("mess","Name not valid");
@@ -72,7 +72,7 @@ public class BookController {
         if (book!=null&&!book.getName().isEmpty()){
             book.setStatus(bookService.findById(book.getId()).get().isStatus());
             bookService.save(book);
-            model.addAttribute("books", bookService.findAllByStatusIsTrue());
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
             return "book/bookList";
         }else {
             model.addAttribute("mess","Name not valid");
@@ -84,7 +84,7 @@ public class BookController {
         Book book1 = bookService.findById(book.getId()).get();
         book1.setStatus(false);
         bookService.save(book1);
-        model.addAttribute("books", bookService.findAllByStatusIsTrue());
+        model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
         return "redirect:/books";
     }
 }

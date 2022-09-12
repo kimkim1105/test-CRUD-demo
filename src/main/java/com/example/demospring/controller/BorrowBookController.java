@@ -61,7 +61,7 @@ public class BorrowBookController {
         bookDTOList = new ArrayList<>();
         try {
             if (!search.isEmpty()&&search!=null){
-                Iterator<Book> bookIterator = bookService.findAllByNameContainingAndStatusIsTrue(search).iterator();
+                Iterator<Book> bookIterator = bookService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search).iterator();
                 while (bookIterator.hasNext()){
                     Book book = bookIterator.next();
                     if (bookService.checkBookInBorrow(book)){
@@ -75,7 +75,7 @@ public class BorrowBookController {
                 model.addAttribute("books", bookDTOList);
                 return "borrow/book";
             }else {
-                Iterator<Book> bookIterator = bookService.findAllByStatusIsTrue().iterator();
+                Iterator<Book> bookIterator = bookService.findAllByStatusIsTrueOrderByIdDesc().iterator();
                 while (bookIterator.hasNext()){
                     Book book = bookIterator.next();
                     if (bookService.checkBookInBorrow(book)){
@@ -90,7 +90,7 @@ public class BorrowBookController {
                 return "borrow/book";
             }
         }catch (Exception e){
-            Iterator<Book> bookIterator = bookService.findAllByStatusIsTrue().iterator();
+            Iterator<Book> bookIterator = bookService.findAllByStatusIsTrueOrderByIdDesc().iterator();
             while (bookIterator.hasNext()){
                 Book book = bookIterator.next();
                 if (bookService.checkBookInBorrow(book)){
@@ -110,7 +110,7 @@ public class BorrowBookController {
         studentDTOList = new ArrayList<>();
         try {
             if (!search.isEmpty()&&search!=null){
-                Iterator<Student> studentIterator = studentService.findAllByNameContainingAndStatusIsTrue(search).iterator();
+                Iterator<Student> studentIterator = studentService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search).iterator();
                 while (studentIterator.hasNext()){
                     Student student = studentIterator.next();
                     if (studentService.checkStudentInBorrow(student)){
@@ -124,7 +124,7 @@ public class BorrowBookController {
                 model.addAttribute("students", studentDTOList);
                 return "borrow/student";
             }else {
-                Iterator<Student> studentIterator = studentService.findAllByStatusIsTrue().iterator();
+                Iterator<Student> studentIterator = studentService.findAllByStatusIsTrueOrderByIdDesc().iterator();
                 while (studentIterator.hasNext()){
                     Student student = studentIterator.next();
                     if (studentService.checkStudentInBorrow(student)){
@@ -139,7 +139,7 @@ public class BorrowBookController {
                 return "borrow/student";
             }
         }catch (Exception e){
-            Iterator<Student> studentIterator = studentService.findAllByStatusIsTrue().iterator();
+            Iterator<Student> studentIterator = studentService.findAllByStatusIsTrueOrderByIdDesc().iterator();
             while (studentIterator.hasNext()){
                 Student student = studentIterator.next();
                 if (studentService.checkStudentInBorrow(student)){

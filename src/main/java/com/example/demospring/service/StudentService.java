@@ -46,13 +46,13 @@ studentRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<Student> findAllByStatusIsTrue() {
-        return studentRepository.findAllByStatusIsTrue();
+    public Iterable<Student> findAllByStatusIsTrueOrderByIdDesc() {
+        return studentRepository.findAllByStatusIsTrueOrderByIdDesc();
     }
 
     @Override
-    public Iterable<Student> findAllByNameContainingAndStatusIsTrue(String name) {
-        return studentRepository.findAllByNameContainingAndStatusIsTrue(name);
+    public Iterable<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name) {
+        return studentRepository.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(name);
     }
 
     @Override

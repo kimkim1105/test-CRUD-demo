@@ -12,8 +12,8 @@ public interface IBookRepository extends JpaRepository<Book, Long> {
     Iterable<Book> getListFreeBook();
     @Query(value = "select * from books where status = true and id in (select book_id from borrowbooks where date between (select adddate(curdate(),-3)) and curdate())",nativeQuery = true)
     Iterable<Book> getListBookInBorrow();
-    Iterable<Book> findAllByStatusIsTrue();
-    Iterable<Book> findAllByNameContainingAndStatusIsTrue(String name);
+    Iterable<Book> findAllByStatusIsTrueOrderByIdDesc();
+    Iterable<Book> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name);
     Iterable<Book> findAllByNameContaining(String name);
 
 

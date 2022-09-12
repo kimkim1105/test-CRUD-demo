@@ -26,14 +26,14 @@ public class StudentController {
         model.addAttribute("student", student);
         try {
             if (!search.isEmpty() && search != null) {
-                model.addAttribute("students", studentService.findAllByNameContainingAndStatusIsTrue(search));
+                model.addAttribute("students", studentService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search));
                 return "student/studentList";
             } else {
-                model.addAttribute("students", studentService.findAllByStatusIsTrue());
+                model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
                 return "student/studentList";
             }
         } catch (Exception e) {
-            model.addAttribute("students", studentService.findAllByStatusIsTrue());
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
             return "student/studentList";
         }
     }
@@ -43,7 +43,7 @@ public class StudentController {
         if (student != null && !student.getName().isEmpty()) {
             student.setStatus(true);
             studentService.save(student);
-            model.addAttribute("students", studentService.findAllByStatusIsTrue());
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
             return "student/studentList";
         } else {
             model.addAttribute("mess", "Name not valid");
@@ -73,7 +73,7 @@ public class StudentController {
         if (student != null && !student.getName().isEmpty()) {
             student.setStatus(studentService.findById(student.getId()).get().isStatus());
             studentService.save(student);
-            model.addAttribute("students", studentService.findAllByStatusIsTrue());
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
             return "redirect:/students";
         } else {
             model.addAttribute("mess", "Name not valid");
@@ -86,7 +86,7 @@ public class StudentController {
         Student student1 = studentService.findById(student.getId()).get();
         student1.setStatus(false);
         studentService.save(student1);
-        model.addAttribute("students", studentService.findAllByStatusIsTrue());
+        model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
         return "redirect:/students";
     }
 

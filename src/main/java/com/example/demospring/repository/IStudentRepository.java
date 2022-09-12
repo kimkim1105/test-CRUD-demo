@@ -14,7 +14,7 @@ public interface IStudentRepository extends JpaRepository<Student, Long> {
     Iterable<Student> getListFreeStudent();
     @Query(value = "select * from students where status = true and id in (select student_id from borrowbooks where date between (select adddate(curdate(),-3)) and curdate())", nativeQuery = true)
     Iterable<Student> getListStudentInBorrow();
-    Iterable<Student> findAllByStatusIsTrue();
-    Iterable<Student> findAllByNameContainingAndStatusIsTrue(String name);
+    Iterable<Student> findAllByStatusIsTrueOrderByIdDesc();
+    Iterable<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name);
 
 }

@@ -9,12 +9,6 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class WebApp  extends SpringBeanAutowiringSupport {
    @GetMapping
     public String index() {
-        System.out.println("ccc");
         return "index";
-    }
-    @GetMapping("/test")
-    public String test() {
-        System.out.println("ccc");
-        return "test";
     }
 }

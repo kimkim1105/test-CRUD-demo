@@ -44,13 +44,13 @@ bookRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<Book> findAllByStatusIsTrue() {
-        return bookRepository.findAllByStatusIsTrue();
+    public Iterable<Book> findAllByStatusIsTrueOrderByIdDesc() {
+        return bookRepository.findAllByStatusIsTrueOrderByIdDesc();
     }
 
     @Override
-    public Iterable<Book> findAllByNameContainingAndStatusIsTrue(String name) {
-        return bookRepository.findAllByNameContainingAndStatusIsTrue(name);
+    public Iterable<Book> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name) {
+        return bookRepository.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(name);
     }
 
     @Override
