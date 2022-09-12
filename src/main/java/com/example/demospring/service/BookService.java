@@ -4,6 +4,8 @@ import com.example.demospring.model.Book;
 import com.example.demospring.model.BookDTO;
 import com.example.demospring.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,13 +46,13 @@ bookRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<Book> findAllByStatusIsTrueOrderByIdDesc() {
-        return bookRepository.findAllByStatusIsTrueOrderByIdDesc();
+    public Page<Book> findAllByStatusIsTrueOrderByIdDesc(Pageable pageable) {
+        return bookRepository.findAllByStatusIsTrueOrderByIdDesc(pageable);
     }
 
     @Override
-    public Iterable<Book> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name) {
-        return bookRepository.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(name);
+    public Page<Book> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name,Pageable pageable) {
+        return bookRepository.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(name,pageable);
     }
 
     @Override

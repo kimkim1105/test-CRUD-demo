@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IStudentRepository extends JpaRepository<Student, Long> {
-    @Query(value = "select * from students where status = true and id not in (select student_id from borrowbooks where date between (select adddate(curdate(),-3)) and curdate())",nativeQuery = true)
+    @Query(value = "select * from students where status = true and active = 'free'",nativeQuery = true)
     Iterable<Student> getListFreeStudent();
-    @Query(value = "select * from students where status = true and id in (select student_id from borrowbooks where date between (select adddate(curdate(),-3)) and curdate())", nativeQuery = true)
+    @Query(value = "select * from students where status = true and active = 'borrowing'", nativeQuery = true)
     Iterable<Student> getListStudentInBorrow();
-    Iterable<Student> findAllByStatusIsTrueOrderByIdDesc();
-    Iterable<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name);
+    Page<Student> findAllByStatusIsTrueOrderByIdDesc(Pageable pageable);
+    Page<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name, Pageable pageable);
 
 }

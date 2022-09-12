@@ -57,6 +57,16 @@
         </tr>
         </tbody>
     </table>
+    <div>
+        <ul class="nav nav-pills">
+            <li class="nav-item" th:each="i:${#numbers.sequence(0,books.totalPages-1)}">
+                <a th:href="@{'/books'(page=${i})}" th:text="${i+1}" class="nav-link" th:classappend="${books.number}==${i}?'active':''"></a>
+            </li>
+        </ul>
+<!--        <a th:href="@{'/books'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>-->
+<!--        <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>-->
+<!--        <a th:href="@{'/books'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>-->
+    </div>
 </div>
 
 

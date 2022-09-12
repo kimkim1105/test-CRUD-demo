@@ -15,6 +15,8 @@ public class BorrowBook {
     @ManyToOne
     private Student student;
     private LocalDate date;
+    private LocalDate returnDate;
+    private String type;
     private boolean status;
     private String note;
 
@@ -26,6 +28,22 @@ public class BorrowBook {
         this.book = book;
         this.student = student;
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
     public boolean isStatus() {

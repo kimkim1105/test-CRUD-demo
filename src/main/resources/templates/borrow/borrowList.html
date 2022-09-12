@@ -117,15 +117,17 @@
     <div>
         <nav class="navbar">
             <form class="form-inline col-sm-12">
-                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search by book name or student name" aria-label="Search">
+                <div class="col-sm-12"><input class="form-control mr-sm-2" style="width: 100%;" type="search" name="search" placeholder="Search by book name or student name" aria-label="Search"></div>
             </form>
+            <br><br>
+
             <form class="form-inline col-sm-12" th:action="@{/borrowbooks/addOrder}"
                   method="POST">
-                <div class="col-sm-12"><p style="color: red" th:if="${mess}" th:utext="${mess}"></p></div>
-                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" name="studentId"
+                <div class="col-sm-12"><p style="color: red" th:if="${addmess}" th:utext="${addmess}"></p></div>
+                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="studentId" name="studentId"
                                              placeholder="Student Id"
                                              aria-label="first" style="width: 100%;"></div>
-                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" name="bookId"
+                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="bookId" name="bookId"
                                              placeholder="Book Id"
                                              aria-label="last" style="width: 100%;"></div>
                 <div class="col-sm-4">
@@ -159,6 +161,7 @@
                 <th scope="col">Book</th>
                 <th scope="col">Date</th>
                 <th scope="col">Action</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody id="drawTable">
@@ -167,10 +170,18 @@
                 <td th:utext="${borrow.student.name}"></td>
                 <td th:utext="${borrow.book.name}"></td>
                 <td th:utext="${borrow.date}"></td>
-                <td><a th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-danger">Delete</a></td>
+                <td><a th:if="${borrow.type}!='completed'" th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-danger">Delete</a></td>
+                <td><a th:hidden="${borrow.type}=='completed'?'hidden':'false'" th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-primary">Return</a></td>
             </tr>
             </tbody>
         </table>
+        <div>
+            <ul class="nav nav-pills">
+                <li class="nav-item" th:each="i:${#numbers.sequence(0,borrowbooks.totalPages-1)}">
+                    <a th:href="@{'/borrowbooks'(page=${i})}" th:text="${i+1}" class="nav-link" th:classappend="${borrowbooks.number}==${i}?'active':''"></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -224,77 +235,76 @@
     </div>
 </div>
 
+<!-- return order Modal -->
+<div class="modal fade" id="returnOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form th:action="@{/borrowbooks/returnOrder}"
+              th:object="${order}" method="put">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalLabel">Return book confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="return-order-info">
+                    Are you sure to return?
+                    <div class="form-group">
+                        <!--                        <label class="col-form-label">Name:</label>-->
+                        <input type="text" hidden id="return-order-id" class="form-control" th:field="*{id}"
+                               th:value="${order.id}">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Student Name:</label>
+                        <p th:field="*{student}" id="return-order-student-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Book Name:</label>
+                        <p th:field="*{book}" id="return-order-book-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Date start borrowing:</label>
+                        <p th:field="*{date}" id="return-order-date">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Close
+                    </button>
+                    <button type="submit" class="btn btn-danger" id="return-order-confirm">
+                        Return
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <th:block th:replace="share/footer :: footer"></th:block>
 
-<!--<div>-->
-<!--<a th:href="@{/index}">Back</a>-->
-<!--<a th:href="@{/borrowbooks/addOrder}">add Order</a>-->
-<!--<a th:href="@{/books/bookFree}">List Book can borrow</a>-->
-<!--<a th:href="@{/books/bookBorrowed}">List book borrowed</a>-->
-
-<!--</div>-->
 <script>
     function reloadpage() {
         window.location.reload();
     }
     $(document).ready(function (){
-        // $('#book-can-borrow').on('click',function (event){
-        //     event.preventDefault();
-        //     var  href = $(this).attr('href');
-        //     $.get(href,function (booklist, status){
-        //         str = '<!--list free book-->\n' +
-        //             '<div class="container" th:fragment="content">\n' +
-        //             '    <div>\n' +
-        //             '        <h1 style="text-align: center; margin: 0">List book can borrow</h1>\n' +
-        //             '    </div>\n' +
-        //             '    <hr>\n' +
-        //             '    <nav class="navbar">\n' +
-        //             '        <form class="form-inline">\n' +
-        //             '            <input class="form-control mr-sm-2" type="search" id="searchbook" name="searchBookFree" placeholder="Search by name"  aria-label="Search">\n' +
-        //             '        </form>\n' +
-        //             '    </nav>\n' +
-        //             '    <span style="color: red; margin-top:5px"></span>\n' +
-        //             '    <br>\n' +
-        //             '    <table class="table table-striped">\n' +
-        //             '        <thead>\n' +
-        //             '        <th colspan="4">Book list</th>\n' +
-        //             '        </thead>\n' +
-        //             '        <thead>\n' +
-        //             '        <tr>\n' +
-        //             '            <th scope="col">#</th>\n' +
-        //             '            <th scope="col">Id</th>\n' +
-        //             '            <th scope="col">Name</th>\n' +
-        //             '        </tr>\n' +
-        //             '        </thead>\n' +
-        //             '        <tbody>\n'
-        //         // let searbookfree = document.getElementById('searchBookFree').value;
-        //         // console.log(searbookfree)
-        //         let bookinfo = booklist.slice();
-        //         $.each(bookinfo, function (index, book) {
-        //             console.log("co lay duowc tuwng ten sach k", book)
-        //             str += '        <tr>\n' +
-        //                 '            <td>'+(index +1)+'</td>\n' +
-        //                 '            <td>'+book.id+'</td>\n' +
-        //                 '            <td>'+book.name+'</td>\n' +
-        //                 '        </tr>\n'
-        //         })
-        //             str+='        </tbody>\n' +
-        //             '    </table>\n' +
-        //             '</div>'
-        //         $('#show-content').html(str);
-        //     })
+        // let studentId = $('#studentId').val();
+        // let bookId = $('#bookId').val();
+        // var href = 'http://localhost:8080/borrowbooks/addOrder?studentId='+studentId+'&bookId='+bookId;
+        // console.log(studentId+ "        "+bookId)
+        // $.post(href, function (order, status) {
+        //     console.log(order)
         // })
         $('.table .btn-danger').on('click', function (event) {
             event.preventDefault();
             var href = $(this).attr('href');
             $.get(href, function (order, status) {
-                var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
-                $.get(link, function (check, status) {
-                    if (check) {
-                        // console.log(" vao duoc if k")
-                        $('#delete-order-info').html("Order completed, can't edit");
-                        $('#delete-order-confirm').hide();
-                    } else {
+                // var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                // $.get(link, function (check, status) {
+                //     if (check) {
+                //         // console.log(" vao duoc if k")
+                //         $('#delete-order-info').html("Order completed, can't edit");
+                //         $('#delete-order-confirm').hide();
+                //     } else {
                         $('#order-id').val(order.id);
                         console.log("id laf bn", order.id)
                         // $('#order-student-name').val(order.student);
@@ -303,10 +313,34 @@
                         $('#order-student-name').html(order.student.name);
                         $('#order-book-name').html(order.book.name);
                         $('#order-date').html(order.date);
-                    }
-                })
+                //     }
+                // })
             })
             $('#deleteOrderModal').modal();
+        })
+        $('.table .btn-primary').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $.get(href, function (order, status) {
+                // var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                // $.get(link, function (check, status) {
+                //     if (check) {
+                //         // console.log(" vao duoc if k")
+                //         $('#delete-order-info').html("Order completed, can't edit");
+                //         $('#delete-order-confirm').hide();
+                //     } else {
+                        $('#return-order-id').val(order.id);
+                        console.log("id laf bn", order.id)
+                        // $('#order-student-name').val(order.student);
+                        // $('#order-book-name').val(order.book);
+                        // $('#order-dat').val(order.date);
+                        $('#return-order-student-name').html(order.student.name);
+                        $('#return-order-book-name').html(order.book.name);
+                        $('#return-order-date').html(order.date);
+                //     }
+                // })
+            })
+            $('#returnOrderModal').modal();
         })
     })
 </script>

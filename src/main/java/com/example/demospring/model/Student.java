@@ -10,6 +10,7 @@ public class Student {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String active;
     private boolean status;
 
     public Student() {
@@ -18,6 +19,14 @@ public class Student {
     public Student(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 
     public boolean isStatus() {

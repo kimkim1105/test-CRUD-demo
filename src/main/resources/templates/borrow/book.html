@@ -135,10 +135,17 @@
             <td th:utext="${b.index+1}"></td>
             <td th:utext="${book.id}"></td>
             <td th:utext="${book.name}"></td>
-            <td th:utext="${book.status}"></td>
+            <td th:utext="${book.active}"></td>
         </tr>
         </tbody>
     </table>
+    <div>
+        <ul class="nav nav-pills">
+            <li class="nav-item" th:each="i:${#numbers.sequence(0,books.totalPages-1)}">
+                <a th:href="@{'/borrowbooks/bookFree'(page=${i})}" th:text="${i+1}" class="nav-link" th:classappend="${books.number}==${i}?'active':''"></a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <th:block th:replace="share/footer :: footer"></th:block>

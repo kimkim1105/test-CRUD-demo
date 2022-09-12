@@ -4,6 +4,9 @@ import com.example.demospring.model.Book;
 import com.example.demospring.model.Student;
 import com.example.demospring.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,34 +19,37 @@ import java.util.Optional;
 public class BookController {
     @Autowired
     IBookService bookService;
+
     @GetMapping
-    public String getBookList(Model model, @RequestParam(required = false, name = "search") String search){
+    public String getBookList(Model model, @RequestParam(required = false, name = "search") String search,@PageableDefault(value = 5) Pageable pageable){
         Book book = new Book();
         model.addAttribute("book", book);
         try {
             if (!search.isEmpty()&&search!=null){
-                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search));
+                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search,pageable));
+                model.addAttribute("currentPage", pageable.getPageNumber());
                 return "book/bookList";
             }else {
-                model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
+                model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc(pageable));
                 return "book/bookList";
             }
         }catch (Exception e){
-            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc(pageable));
             return "book/bookList";
         }
     }
 
     @PostMapping("/addBook")
-    public String addBook(@ModelAttribute(name = "book") Book book, Model model){
+    public String addBook(@ModelAttribute(name = "book") Book book, Model model,@PageableDefault(value = 5) Pageable pageable){
         if (book.getName()!=null&&!book.getName().isEmpty()){
             book.setStatus(true);
+            book.setActive("free");
             bookService.save(book);
-            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
-            return "book/bookList";
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc(pageable));
+            return "redirect:/books";
         }else {
             model.addAttribute("mess","Name not valid");
-            return "book/addBook";
+            return "redirect:/books";
         }
     }
     @RequestMapping("/listBookInBorrow")
@@ -68,23 +74,25 @@ public class BookController {
 //        return "book/updateBook";
 //    }
     @RequestMapping(value = "/updateBook", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String updateBook(Model model, @ModelAttribute Book book){
+    public String updateBook(Model model, @ModelAttribute Book book,@PageableDefault(value = 5) Pageable pageable){
         if (book!=null&&!book.getName().isEmpty()){
             book.setStatus(bookService.findById(book.getId()).get().isStatus());
+            book.setActive(bookService.findById(book.getId()).get().getActive());
             bookService.save(book);
-            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
-            return "book/bookList";
+            model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc(pageable));
+            return "redirect:/books";
         }else {
             model.addAttribute("mess","Name not valid");
-            return "book/bookList";
+            return "redirect:/books";
         }
     }
     @RequestMapping(value = "/deleteBook", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String deleteBook(Model model, @ModelAttribute Book book){
+    public String deleteBook(Model model, @ModelAttribute Book book,@PageableDefault(value = 5) Pageable pageable){
         Book book1 = bookService.findById(book.getId()).get();
         book1.setStatus(false);
+        book1.setActive("nousing");
         bookService.save(book1);
-        model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc());
+        model.addAttribute("books", bookService.findAllByStatusIsTrueOrderByIdDesc(pageable));
         return "redirect:/books";
     }
 }

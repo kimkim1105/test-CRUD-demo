@@ -54,7 +54,13 @@
         </tr>
         </tbody>
     </table>
-
+    <div>
+        <ul class="nav nav-pills">
+            <li class="nav-item" th:each="i:${#numbers.sequence(0,students.totalPages-1)}">
+                <a th:href="@{'/students'(page=${i})}" th:text="${i+1}" class="nav-link" th:classappend="${students.number}==${i}?'active':''"></a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <!--add student modal-->

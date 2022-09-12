@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        @media screen and (max-width: 480px) {
+            .admin-sidebar {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 480px) {
+            .admin-tabs {
+                display: none;
+            }
+        }
+
+        .admin-sidebar {
+            max-width: 13%;
+        }
+
+        #sidebar-admin {
+            position: fixed;
+        }
+
+        .admin-sidebar-item {
+            padding: 1em;
+            border-bottom: 1px solid white;
+        }
+
+        .admin-nav {
+            background: #49C2B3;
+        }
+
+        .admin-nav-item {
+            color: white;
+            font-weight: bold;
+        }
+
+        .admin-nav-item:hover {
+            color: white;
+            background: #41aea1;
+        }
+
+        .admin-nav-item.active {
+            background: #53FFE7 !important;
+            color: white !important;
+        }
+
+        .admin-header-block {
+            background: #434449;
+            color: white !important;
+            text-align: left;
+            padding: 20px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-color: #ddd;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .admin-filter-button {
+            background: #78B404;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .admin-user-card {
+            margin-bottom: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+<th:block th:replace="share/header :: header"></th:block>
+
+<div class="row">
+    <div class="col-sm-2 admin-sidebar">
+        <div class="nav flex-column nav-pills text-center text-uppercase admin-nav" id="sidebar-admin" role="tablist"
+             aria-orientation="vertical">
+            <a class="nav-link  admin-nav-item admin-sidebar-item"
+               role="tab" th:href="@{/borrowbooks/}" onclick="reloadpage()"
+               aria-selected="false">Manage Order</a>
+            <!--            <a th:href="@{/borrowbooks/bookFree}">List Book can borrow</a>-->
+            <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+               aria-selected="false" th:href="@{/borrowbooks/bookFree}" >List Book</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+               aria-selected="false" th:href="@{/borrowbooks/student}">List Student</a>
+        </div>
+    </div>
+
+</div>
+<br><br>
+
+<!--manage order-->
+<div class="container" th:fragment="content">
+    <div>
+        <h1 style="text-align: center; margin: 0">Manage borrow book order</h1>
+    </div>
+    <hr>
+    <div>
+        <nav class="navbar">
+            <form class="form-inline col-sm-12">
+                <div class="col-sm-4">
+                    <table>
+                        <tr>
+                            <td>count book of borrowing :</td>
+                            <td th:text="${countBookOfBorrow}"></td>
+                        </tr>
+                        <tr>
+                            <td>count student of borrowing :</td>
+                            <td th:text="${countStudentOfBorrow}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-4">
+                    <table>
+                        <tr>
+                            <td>count book of free :</td>
+                            <td th:text="${countBookOfFree}"></td>
+                        </tr>
+                        <tr>
+                            <td>count student of free :</td>
+                            <td th:text="${countStudentOfFree}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-4">
+                    <table>
+                        <tr>
+                            <td>total book :</td>
+                            <td th:text="${countBookOfFree}+${countBookOfBorrow}"></td>
+                        </tr>
+                        <tr>
+                            <td>total student :</td>
+                            <td th:text="${countStudentOfFree}+${countStudentOfBorrow}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <form class="form-inline col-sm-12">
+                <div class="col-sm-12"><input class="form-control mr-sm-2" style="width: 100%;" type="search" name="search" placeholder="Search by book name or student name" aria-label="Search"></div>
+            </form>
+            <br><br>
+        </nav>
+        <div></div>
+
+    </div>
+</div>
+
+<th:block th:replace="share/footer :: footer"></th:block>
+
+<script>
+    function reloadpage() {
+        window.location.reload();
+    }
+    $(document).ready(function (){
+        $('.table .btn-danger').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $.get(href, function (order, status) {
+                // var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                // $.get(link, function (check, status) {
+                //     if (check) {
+                //         // console.log(" vao duoc if k")
+                //         $('#delete-order-info').html("Order completed, can't edit");
+                //         $('#delete-order-confirm').hide();
+                //     } else {
+                $('#order-id').val(order.id);
+                console.log("id laf bn", order.id)
+                // $('#order-student-name').val(order.student);
+                // $('#order-book-name').val(order.book);
+                // $('#order-dat').val(order.date);
+                $('#order-student-name').html(order.student.name);
+                $('#order-book-name').html(order.book.name);
+                $('#order-date').html(order.date);
+                //     }
+                // })
+            })
+            $('#deleteOrderModal').modal();
+        })
+        $('.table .btn-primary').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $.get(href, function (order, status) {
+                // var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                // $.get(link, function (check, status) {
+                //     if (check) {
+                //         // console.log(" vao duoc if k")
+                //         $('#delete-order-info').html("Order completed, can't edit");
+                //         $('#delete-order-confirm').hide();
+                //     } else {
+                $('#return-order-id').val(order.id);
+                console.log("id laf bn", order.id)
+                // $('#order-student-name').val(order.student);
+                // $('#order-book-name').val(order.book);
+                // $('#order-dat').val(order.date);
+                $('#return-order-student-name').html(order.student.name);
+                $('#return-order-book-name').html(order.book.name);
+                $('#return-order-date').html(order.date);
+                //     }
+                // })
+            })
+            $('#returnOrderModal').modal();
+        })
+    })
+</script>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

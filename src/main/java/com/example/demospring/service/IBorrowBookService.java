@@ -1,10 +1,12 @@
 package com.example.demospring.service;
 
 import com.example.demospring.model.BorrowBook;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IBorrowBookService extends IGeneralService<BorrowBook> {
-    Iterable<BorrowBook> findAllByStatusIsTrueOrderByDateDesc();
+    Page<BorrowBook> findAllByStatusIsTrueOrderByDateDesc(Pageable pageable);
     Iterable<BorrowBook> getOrderCompleted();
     Iterable<BorrowBook> getOrderUnCompleted();
-    Iterable<BorrowBook> searchByBookOrStudent(String search);
+    Page<BorrowBook> searchByBookOrStudent(String search, Pageable pageable);
 }

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface IStudentService extends IGeneralService<Student> {
     Iterable<Student> getListFreeStudent();
     Iterable<Student> getListStudentInBorrow();
-    Iterable<Student> findAllByStatusIsTrueOrderByIdDesc();
-    Iterable<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name);
+    Page<Student> findAllByStatusIsTrueOrderByIdDesc(Pageable pageable);
+    Page<Student> findAllByNameContainingAndStatusIsTrueOrderByIdDesc(String name, Pageable pageable);
     Boolean checkStudentInBorrow(Student student);
 }

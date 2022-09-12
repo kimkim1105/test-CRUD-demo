@@ -3,6 +3,8 @@ package com.example.demospring.service;
 import com.example.demospring.model.BorrowBook;
 import com.example.demospring.repository.IBorrowBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,8 +34,8 @@ borrowBookRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<BorrowBook> findAllByStatusIsTrueOrderByDateDesc() {
-        return borrowBookRepository.findAllByStatusIsTrueOrderByDateDesc();
+    public Page<BorrowBook> findAllByStatusIsTrueOrderByDateDesc(Pageable pageable) {
+        return borrowBookRepository.findAllByStatusIsTrueOrderByDateDesc(pageable);
     }
 
     @Override
@@ -47,7 +49,7 @@ borrowBookRepository.deleteById(id);
     }
 
     @Override
-    public Iterable<BorrowBook> searchByBookOrStudent(String search) {
-        return borrowBookRepository.searchByBookOrStudent(search);
+    public Page<BorrowBook> searchByBookOrStudent(String search, Pageable pageable) {
+        return borrowBookRepository.searchByBookOrStudent(search, pageable);
     }
 }

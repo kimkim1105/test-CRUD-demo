@@ -21,33 +21,34 @@ public class StudentController {
     IStudentService studentService;
 
     @GetMapping
-    public String getStudentList(Model model, @RequestParam(required = false, name = "search") String search) {
+    public String getStudentList(Model model, @RequestParam(required = false, name = "search") String search,@PageableDefault(value = 5) Pageable pageable) {
         Student student = new Student();
         model.addAttribute("student", student);
         try {
             if (!search.isEmpty() && search != null) {
-                model.addAttribute("students", studentService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search));
+                model.addAttribute("students", studentService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search,pageable));
                 return "student/studentList";
             } else {
-                model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
+                model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc(pageable));
                 return "student/studentList";
             }
         } catch (Exception e) {
-            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc(pageable));
             return "student/studentList";
         }
     }
 
     @PostMapping("/addStudent")
-    public String addStudent(@ModelAttribute(name = "student") Student student, Model model) {
+    public String addStudent(@ModelAttribute(name = "student") Student student, Model model,@PageableDefault(value = 5) Pageable pageable) {
         if (student != null && !student.getName().isEmpty()) {
             student.setStatus(true);
+            student.setActive("free");
             studentService.save(student);
-            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
-            return "student/studentList";
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc(pageable));
+            return "redirect:/students";
         } else {
             model.addAttribute("mess", "Name not valid");
-            return "student/studentList";
+            return "redirect:/students";
         }
     }
 
@@ -69,11 +70,12 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/updateStudent", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String updateStudent(Model model, @ModelAttribute Student student) {
+    public String updateStudent(Model model, @ModelAttribute Student student,@PageableDefault(value = 5) Pageable pageable) {
         if (student != null && !student.getName().isEmpty()) {
             student.setStatus(studentService.findById(student.getId()).get().isStatus());
+            student.setActive(studentService.findById(student.getId()).get().getActive());
             studentService.save(student);
-            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
+            model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc(pageable));
             return "redirect:/students";
         } else {
             model.addAttribute("mess", "Name not valid");
@@ -82,11 +84,12 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/deleteStudent", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String deleteStudent(@ModelAttribute Student student, Model model) {
+    public String deleteStudent(@ModelAttribute Student student, Model model,@PageableDefault(value = 5) Pageable pageable) {
         Student student1 = studentService.findById(student.getId()).get();
         student1.setStatus(false);
+        student1.setActive("nousing");
         studentService.save(student1);
-        model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc());
+        model.addAttribute("students", studentService.findAllByStatusIsTrueOrderByIdDesc(pageable));
         return "redirect:/students";
     }
 
