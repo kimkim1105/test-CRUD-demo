@@ -14,6 +14,7 @@ public interface IBookRepository extends JpaRepository<Book, Long> {
     Iterable<Book> getListBookInBorrow();
     Iterable<Book> findAllByStatusIsTrue();
     Iterable<Book> findAllByNameContainingAndStatusIsTrue(String name);
+    Iterable<Book> findAllByNameContaining(String name);
 
 
 }

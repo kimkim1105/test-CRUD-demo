@@ -7,4 +7,6 @@ public interface IBookService extends IGeneralService<Book>{
     Iterable<Book> findAllByStatusIsTrue();
     Iterable<Book> findAllByNameContainingAndStatusIsTrue(String name);
     Iterable<Book> getListBookInBorrow();
+    Boolean checkBookInBorrow(Book book);
+    Iterable<Book> findAllByNameContaining(String name);
 }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <style>
+    @media screen and (max-width: 480px) {
+      .admin-sidebar {
+        display: none;
+      }
+    }
+
+    @media screen and (min-width: 480px) {
+      .admin-tabs {
+        display: none;
+      }
+    }
+
+    .admin-sidebar {
+      max-width: 13%;
+    }
+
+    #sidebar-admin {
+      position: fixed;
+    }
+
+    .admin-sidebar-item {
+      padding: 1em;
+      border-bottom: 1px solid white;
+    }
+
+    .admin-nav {
+      background: #49C2B3;
+    }
+
+    .admin-nav-item {
+      color: white;
+      font-weight: bold;
+    }
+
+    .admin-nav-item:hover {
+      color: white;
+      background: #41aea1;
+    }
+
+    .admin-nav-item.active {
+      background: #53FFE7 !important;
+      color: white !important;
+    }
+
+    .admin-header-block {
+      background: #434449;
+      color: white !important;
+      text-align: left;
+      padding: 20px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-color: #ddd;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .admin-filter-button {
+      background: #78B404;
+      color: white !important;
+      font-weight: bold;
+    }
+
+    .admin-user-card {
+      margin-bottom: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+<th:block th:replace="share/header :: header"></th:block>
+
+<div class="row">
+  <div class="col-sm-2 admin-sidebar">
+    <div class="nav flex-column nav-pills text-center text-uppercase admin-nav" id="sidebar-admin" role="tablist"
+         aria-orientation="vertical">
+      <a class="nav-link  admin-nav-item admin-sidebar-item"
+         role="tab" th:href="@{/borrowbooks/}" onclick="reloadpage()"
+         aria-selected="false">Manage Order</a>
+      <!--            <a th:href="@{/borrowbooks/bookFree}">List Book can borrow</a>-->
+      <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+         aria-selected="false" th:href="@{/borrowbooks/bookFree}" >List Book</a>
+      <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+         aria-selected="false" th:href="@{/borrowbooks/student}">List Student</a>
+    </div>
+  </div>
+
+</div>
+<br><br>
+
+<div class="container" th:fragment="content">
+  <div>
+    <h1 style="text-align: center; margin: 0">List Student</h1>
+  </div>
+  <hr>
+  <span style="color: red; margin-top:5px" id="validate"></span>
+  <br>
+  <br>
+
+  <table class="table table-striped">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search by name"  aria-label="Search">
+    </form>
+    <thead>
+    <th colspan="3">Student Information</th>
+    <th></th>
+    <th>
+      <!--            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addBookModal">Add new book</button>-->
+    </th>
+    </thead>
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each ="book, b : ${students}">
+      <td th:utext="${b.index+1}"></td>
+      <td th:utext="${book.id}"></td>
+      <td th:utext="${book.name}"></td>
+      <td th:utext="${book.status}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<th:block th:replace="share/footer :: footer"></th:block>
+<script>
+  function reloadpage() {
+    window.location.reload();
+  }
+</script>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

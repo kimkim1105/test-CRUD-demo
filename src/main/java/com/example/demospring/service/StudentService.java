@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,15 @@ studentRepository.deleteById(id);
     @Override
     public Iterable<Student> findAllByNameContainingAndStatusIsTrue(String name) {
         return studentRepository.findAllByNameContainingAndStatusIsTrue(name);
+    }
+
+    @Override
+    public Boolean checkStudentInBorrow(Student student) {
+        List<Student> studentList = (List<Student>) getListStudentInBorrow();
+        if (studentList.contains(student)){
+            return true;
+        }
+        return false;
     }
 
 }

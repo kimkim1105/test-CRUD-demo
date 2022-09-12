@@ -33,36 +33,7 @@ public class BookController {
             return "book/bookList";
         }
     }
-    @GetMapping("/bookFree")
-    public String getBookListFree(Model model, @RequestParam(required = false, name = "search") String search){
-        try {
-            if (!search.isEmpty()&&search!=null){
-                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrue(search));
-                return "book/bookcheck";
-            }else {
-                model.addAttribute("books", bookService.getListFreeBook());
-                return "book/bookcheck";
-            }
-        }catch (Exception e){
-            model.addAttribute("books", bookService.getListFreeBook());
-            return "book/bookcheck";
-        }
-    }
-    @GetMapping("/bookBorrowed")
-    public String getBookListBorowed(Model model, @RequestParam(required = false, name = "search") String search){
-        try {
-            if (!search.isEmpty()&&search!=null){
-                model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrue(search));
-                return "book/bookcheck";
-            }else {
-                model.addAttribute("books", bookService.getListFreeBook());
-                return "book/bookcheck";
-            }
-        }catch (Exception e){
-            model.addAttribute("books", bookService.getListFreeBook());
-            return "book/bookcheck";
-        }
-    }
+
     @PostMapping("/addBook")
     public String addBook(@ModelAttribute(name = "book") Book book, Model model){
         if (book.getName()!=null&&!book.getName().isEmpty()){
@@ -102,10 +73,10 @@ public class BookController {
             book.setStatus(bookService.findById(book.getId()).get().isStatus());
             bookService.save(book);
             model.addAttribute("books", bookService.findAllByStatusIsTrue());
-            return "redirect:/books";
+            return "book/bookList";
         }else {
             model.addAttribute("mess","Name not valid");
-            return "redirect:/books";
+            return "book/bookList";
         }
     }
     @RequestMapping(value = "/deleteBook", method = {RequestMethod.PUT, RequestMethod.GET})

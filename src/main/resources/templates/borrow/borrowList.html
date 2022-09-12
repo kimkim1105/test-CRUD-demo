@@ -88,265 +88,100 @@
     <div class="col-sm-2 admin-sidebar">
         <div class="nav flex-column nav-pills text-center text-uppercase admin-nav" id="sidebar-admin" role="tablist"
              aria-orientation="vertical">
-            <a class="nav-link active show admin-nav-item admin-sidebar-item" data-toggle="pill"
-               href="#manage-borrow-order" role="tab" aria-controls="admin-communicate"
-               aria-selected="true">Manage Order</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-requests" role="tab"
-               aria-controls="admin-requests" aria-selected="false">Requests</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-users" role="tab"
-               aria-controls="admin-users" aria-selected="false">Users</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-groups" role="tab"
-               aria-controls="admin-groups" aria-selected="false">Groups</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-analytics" role="tab"
-               aria-controls="admin-analytics" aria-selected="false">Analytics</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-messages" role="tab"
-               aria-controls="admin-messages" aria-selected="false">Messages</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-sessions" role="tab"
-               aria-controls="admin-sessions" aria-selected="false">Sessions</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-testimonials"
-               role="tab" aria-controls="admin-testimonials" aria-selected="false">Testimonials</a>
-            <a class="nav-link admin-nav-item admin-sidebar-item" data-toggle="pill" href="#admin-changelog" role="tab"
-               aria-controls="admin-changelog" aria-selected="false">Changelog</a>
+            <a class="nav-link  admin-nav-item admin-sidebar-item"
+               role="tab" th:href="@{/borrowbooks/}" onclick="reloadpage()"
+               aria-selected="false">Manage Order</a>
+<!--            <a th:href="@{/borrowbooks/bookFree}">List Book can borrow</a>-->
+            <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+               aria-selected="false" th:href="@{/borrowbooks/bookFree}" >List Book</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+               aria-selected="false" th:href="@{/borrowbooks/student}">List Student</a>
         </div>
     </div>
-    <!--    <div class="col-sm-12 admin-tabs">-->
-    <!--        <ul class="nav nav-tabs admin-nav text-uppercase" role="tablist">-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item active" data-toggle="tab" href="#admin-communicate" role="tab" aria-controls="admin-communicate" aria-selected="true">Communicate</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-requests" role="tab" aria-controls="admin-requests" aria-selected="false">Requests</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-users" role="tab" aria-controls="admin-users" aria-selected="false">Users</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-groups" role="tab" aria-controls="admin-groups" aria-selected="false">Groups</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-analytics" role="tab" aria-controls="admin-analytics" aria-selected="false">Analytics</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-messages" role="tab" aria-controls="admin-messages" aria-selected="false">Messages</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-sessions" role="tab" aria-controls="admin-sessions" aria-selected="false">Sessions</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-testimonials" role="tab" aria-controls="admin-testimonials" aria-selected="false">Testimonials</a>-->
-    <!--            </li>-->
-    <!--            <li class="nav-item">-->
-    <!--                <a class="nav-link admin-nav-item" data-toggle="tab" href="#admin-changelog" role="tab" aria-controls="admin-changelog" aria-selected="false">Changelog</a>-->
-    <!--            </li>-->
-    <!--        </ul>-->
-    <!--    </div>-->
-    <!--    <div class="col-sm-10">-->
-    <!--        <div class="tab-content">-->
-    <!--            <div class="tab-pane fade active show" id="admin-communicate" role="tabpanel" aria-labelledby="admin-communicate-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Communicate</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <nav class="navbar">-->
-    <!--                    <form class="form-inline col-sm-12">-->
-    <!--                        <div class="col-sm-3">-->
-    <!--                            <select class="custom-select">-->
-    <!--                                <option value="1">One</option>-->
-    <!--                                <option value="2">Two</option>-->
-    <!--                                <option value="3">Three</option>-->
-    <!--                            </select>-->
-    <!--                        </div>-->
-    <!--                        <div class="col-sm-3"><input class="form-control mr-sm-2" type="search" placeholder="First Name" aria-label="first" style="width: 100%;"></div>-->
-    <!--                        <div class="col-sm-3"><input class="form-control mr-sm-2" type="search" placeholder="Last Name" aria-label="last" style="width: 100%;"></div>-->
-    <!--                        <div class="col-sm-3">-->
-    <!--                            <ul class="nav nav-pills nav-fill">-->
-    <!--                                <li class="nav-item">-->
-    <!--                                    <a class="nav-link admin-filter-button text-uppercase" href="#">Filter</a>-->
-    <!--                                </li>-->
-    <!--                            </ul>-->
-    <!--                        </div>-->
-    <!--                    </form>-->
-    <!--                </nav>-->
-    <!--                <p>Communicate</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-requests" role="tabpanel" aria-labelledby="admin-requests-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Requests (ACTIVE TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Requests</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-users" role="tabpanel" aria-labelledby="admin-users-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Users (TOTAL TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <div class="container mt-4 mb-5">-->
-    <!--                    <div class="row">-->
-    <!--                        <div class="col-md-4">-->
-    <!--                            <div class="card text-center admin-user-card">-->
-    <!--                                <div class="card-header">Account Type</div>-->
-    <!--                                <div class="card-block p-3">-->
-    <!--                                    <h4 class="card-title">Name</h4>-->
-    <!--                                    <p class="card-text">Information</p>-->
-    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                        <div class="col-md-4">-->
-    <!--                            <div class="card text-center admin-user-card">-->
-    <!--                                <div class="card-header">Account Type</div>-->
-    <!--                                <div class="card-block p-3">-->
-    <!--                                    <h4 class="card-title">Name</h4>-->
-    <!--                                    <p class="card-text">Information</p>-->
-    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                        <div class="col-md-4">-->
-    <!--                            <div class="card text-center admin-user-card">-->
-    <!--                                <div class="card-header">Account Type</div>-->
-    <!--                                <div class="card-block p-3">-->
-    <!--                                    <h4 class="card-title">Name</h4>-->
-    <!--                                    <p class="card-text">Information</p>-->
-    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                        <div class="col-md-4">-->
-    <!--                            <div class="card text-center admin-user-card">-->
-    <!--                                <div class="card-header">Account Type</div>-->
-    <!--                                <div class="card-block p-3">-->
-    <!--                                    <h4 class="card-title">Name</h4>-->
-    <!--                                    <p class="card-text">Information</p>-->
-    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                        <div class="col-md-4">-->
-    <!--                            <div class="card text-center admin-user-card">-->
-    <!--                                <div class="card-header">Account Type</div>-->
-    <!--                                <div class="card-block p-3">-->
-    <!--                                    <h4 class="card-title">Name</h4>-->
-    <!--                                    <p class="card-text">Information</p>-->
-    <!--                                    <a href="#" class="btn btn-primary rounded-0 mb-2">Enable / Disabled</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--                &lt;!&ndash; Card &ndash;&gt;-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-groups" role="tabpanel" aria-labelledby="admin-groups-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Groups (TOTAL TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Groups</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-analytics" role="tabpanel" aria-labelledby="admin-analytics-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Analytics</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Analytics</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-messages" role="tabpanel" aria-labelledby="admin-messages-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Messages (TOTAL TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Messages</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-sessions" role="tabpanel" aria-labelledby="admin-sessions-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Sessions (TOTAL TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Sessions</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-testimonials" role="tabpanel" aria-labelledby="admin-testimonials-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Sessions (TOTAL WRITTEN TODO)</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Testimonials</p>-->
-    <!--            </div>-->
-    <!--            <div class="tab-pane fade" id="admin-changelog" role="tabpanel" aria-labelledby="admin-changelog-tab">-->
-    <!--                <ul class="nav nav-pills nav-fill">-->
-    <!--                    <li class="nav-item">-->
-    <!--                        <h4><a class="nav-link admin-header-block">Admin Portal - Changelog</a></h4>-->
-    <!--                    </li>-->
-    <!--                </ul>-->
-    <!--                <p>Changelog</p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+
 </div>
 <br><br>
-<div class="container" th:fragment="content" id="manage-borrow-order">
+
+<!--manage order-->
+<div class="container" th:fragment="content">
     <div>
         <h1 style="text-align: center; margin: 0">Manage borrow book order</h1>
     </div>
     <hr>
-    <nav class="navbar">
-        <form class="form-inline col-sm-12"  th:action="@{/borrowbooks/addOrder}"
-              method="POST">
-            <div  class="col-sm-12"><p style="color: red" th:if="${mess}" th:utext="${mess}"></p></div>
-            <div class="col-sm-4"><input class="form-control mr-sm-2"  type="text" name="studentId" placeholder="Student Id"
-                                         aria-label="first" style="width: 100%;"></div>
-            <div class="col-sm-4"><input class="form-control mr-sm-2"  type="text" name="bookId" placeholder="Book Id"
-                                         aria-label="last" style="width: 100%;"></div>
-            <div class="col-sm-4">
-                <ul class="nav nav-pills nav-fill">
-                    <li class="nav-item">
-                        <button class="nav-link admin-filter-button text-uppercase" type="submit">Create</button>
-                    </li>
-                </ul>
-            </div>
-        </form>
-    </nav>
-    <span style="color: red; margin-top:5px" id="validate"></span>
-    <br>
-    <table class="table table-striped">
-        <thead>
-        <th colspan="4">Order Information</th>
-        </thead>
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Student Name</th>
-            <th scope="col">Book</th>
-            <th scope="col">Date</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody id="drawTable">
-        <tr th:each="borrow, b : ${borrowbooks}">
-            <td th:utext="${b.index+1}"></td>
-            <td th:utext="${borrow.student.name}"></td>
-            <td th:utext="${borrow.book.name}"></td>
-            <td th:utext="${borrow.date}"></td>
-            <td><a th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-danger">Delete</a></td>
-        </tr>
-        </tbody>
-    </table>
+<!--    <nav class="navbar">-->
+<!--        <form class="form-inline">-->
+<!--            <input class="form-control mr-sm-2" type="search" name="search" id="search"-->
+<!--                   placeholder="Search by name" aria-label="Search">-->
+<!--        </form>-->
+<!--    </nav>-->
+    <div>
+        <nav class="navbar">
+            <form class="form-inline col-sm-12">
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search by book name or student name" aria-label="Search">
+            </form>
+            <form class="form-inline col-sm-12" th:action="@{/borrowbooks/addOrder}"
+                  method="POST">
+                <div class="col-sm-12"><p style="color: red" th:if="${mess}" th:utext="${mess}"></p></div>
+                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" name="studentId"
+                                             placeholder="Student Id"
+                                             aria-label="first" style="width: 100%;"></div>
+                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" name="bookId"
+                                             placeholder="Book Id"
+                                             aria-label="last" style="width: 100%;"></div>
+                <div class="col-sm-4">
+                    <ul class="nav nav-pills nav-fill">
+                        <li class="nav-item">
+                            <button class="nav-link admin-filter-button text-uppercase" type="submit">Create</button>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+
+<!--            <form class="form-inline col-sm-12" th:action="@{/borrowbooks/quicksearch}">-->
+<!--                <select name="quick" id="quick-search">-->
+<!--                    <option value="nosearch">Quick search</option>-->
+<!--                    <option value="completed">Order completed</option>-->
+<!--                    <option value="uncompleted">Order uncompleted</option>-->
+<!--                </select>-->
+<!--            </form>-->
+        </nav>
+        <div></div>
+        <span style="color: red; margin-top:5px" id="validate"></span>
+        <br>
+        <table class="table table-striped">
+            <thead>
+            <th colspan="4">Order Information</th>
+            </thead>
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Book</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody id="drawTable">
+            <tr th:each="borrow, b : ${borrowbooks}">
+                <td th:utext="${b.index+1}"></td>
+                <td th:utext="${borrow.student.name}"></td>
+                <td th:utext="${borrow.book.name}"></td>
+                <td th:utext="${borrow.date}"></td>
+                <td><a th:href="@{borrowbooks/findById/(id=${borrow.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
+
 <!-- delete order Modal -->
-<div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form th:action="@{/borrowbooks/deleteOrder}"
               th:object="${order}" method="put">
-            <div class="modal-content" >
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Delete order confirm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -357,28 +192,32 @@
                     Are you sure to delete?
                     <div class="form-group">
                         <!--                        <label class="col-form-label">Name:</label>-->
-                        <input type="text" hidden  id="order-id" class="form-control"  th:field="*{id}" th:value="${order.id}">
+                        <input type="text" hidden id="order-id" class="form-control" th:field="*{id}"
+                               th:value="${order.id}">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Student Name:</label>
-                        <p th:field="*{student}"  id="order-student-name">
+                        <p th:field="*{student}" id="order-student-name">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Book Name:</label>
-                        <p th:field="*{book}"  id="order-book-name">
+                        <p th:field="*{book}" id="order-book-name">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Date:</label>
-                        <p th:field="*{date}"  id="order-date">
+                        <p th:field="*{date}" id="order-date">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Note:</label>
-                        <input type="text" th:field="*{note}" id="order-note" th:required="required">
+                        <input type="text" th:required="required" th:field="*{note}"  class="form-control" id="order-note">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Close</button>
-                    <button type="submit" class="btn btn-danger" id="delete-order-confirm" onclick="reloadpage()">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="reloadpage()">Close
+                    </button>
+                    <button type="submit" class="btn btn-danger" id="delete-order-confirm">
+                        Delete
+                    </button>
                 </div>
             </div>
         </form>
@@ -395,21 +234,67 @@
 
 <!--</div>-->
 <script>
-    function reloadpage(){
+    function reloadpage() {
         window.location.reload();
     }
     $(document).ready(function (){
-        $('.table .btn-danger').on('click',function (event){
+        // $('#book-can-borrow').on('click',function (event){
+        //     event.preventDefault();
+        //     var  href = $(this).attr('href');
+        //     $.get(href,function (booklist, status){
+        //         str = '<!--list free book-->\n' +
+        //             '<div class="container" th:fragment="content">\n' +
+        //             '    <div>\n' +
+        //             '        <h1 style="text-align: center; margin: 0">List book can borrow</h1>\n' +
+        //             '    </div>\n' +
+        //             '    <hr>\n' +
+        //             '    <nav class="navbar">\n' +
+        //             '        <form class="form-inline">\n' +
+        //             '            <input class="form-control mr-sm-2" type="search" id="searchbook" name="searchBookFree" placeholder="Search by name"  aria-label="Search">\n' +
+        //             '        </form>\n' +
+        //             '    </nav>\n' +
+        //             '    <span style="color: red; margin-top:5px"></span>\n' +
+        //             '    <br>\n' +
+        //             '    <table class="table table-striped">\n' +
+        //             '        <thead>\n' +
+        //             '        <th colspan="4">Book list</th>\n' +
+        //             '        </thead>\n' +
+        //             '        <thead>\n' +
+        //             '        <tr>\n' +
+        //             '            <th scope="col">#</th>\n' +
+        //             '            <th scope="col">Id</th>\n' +
+        //             '            <th scope="col">Name</th>\n' +
+        //             '        </tr>\n' +
+        //             '        </thead>\n' +
+        //             '        <tbody>\n'
+        //         // let searbookfree = document.getElementById('searchBookFree').value;
+        //         // console.log(searbookfree)
+        //         let bookinfo = booklist.slice();
+        //         $.each(bookinfo, function (index, book) {
+        //             console.log("co lay duowc tuwng ten sach k", book)
+        //             str += '        <tr>\n' +
+        //                 '            <td>'+(index +1)+'</td>\n' +
+        //                 '            <td>'+book.id+'</td>\n' +
+        //                 '            <td>'+book.name+'</td>\n' +
+        //                 '        </tr>\n'
+        //         })
+        //             str+='        </tbody>\n' +
+        //             '    </table>\n' +
+        //             '</div>'
+        //         $('#show-content').html(str);
+        //     })
+        // })
+        $('.table .btn-danger').on('click', function (event) {
             event.preventDefault();
-            var  href = $(this).attr('href');
-            $.get(href,function (order, status){
-                var  link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
-                $.get(link,function (check, status){
-                    if (check){
+            var href = $(this).attr('href');
+            $.get(href, function (order, status) {
+                var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
+                $.get(link, function (check, status) {
+                    if (check) {
                         // console.log(" vao duoc if k")
                         $('#delete-order-info').html("Order completed, can't edit");
                         $('#delete-order-confirm').hide();
-                    }else {
+                    } else {
                         $('#order-id').val(order.id);
                         console.log("id laf bn", order.id)
                         // $('#order-student-name').val(order.student);

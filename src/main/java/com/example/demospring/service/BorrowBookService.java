@@ -40,4 +40,14 @@ borrowBookRepository.deleteById(id);
     public Iterable<BorrowBook> getOrderCompleted() {
         return borrowBookRepository.getOrderCompleted();
     }
+
+    @Override
+    public Iterable<BorrowBook> getOrderUnCompleted() {
+        return borrowBookRepository.getOrderUnCompleted();
+    }
+
+    @Override
+    public Iterable<BorrowBook> searchByBookOrStudent(String search) {
+        return borrowBookRepository.searchByBookOrStudent(search);
+    }
 }

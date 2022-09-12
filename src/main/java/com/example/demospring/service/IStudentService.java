@@ -10,4 +10,5 @@ public interface IStudentService extends IGeneralService<Student> {
     Iterable<Student> getListStudentInBorrow();
     Iterable<Student> findAllByStatusIsTrue();
     Iterable<Student> findAllByNameContainingAndStatusIsTrue(String name);
+    Boolean checkStudentInBorrow(Student student);
 }
