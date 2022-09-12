@@ -26,8 +26,8 @@ public class StudentService implements IStudentService{
     }
 
     @Override
-    public void save(Student student) {
-studentRepository.save(student);
+    public Student save(Student student) {
+return studentRepository.save(student);
     }
 
     @Override

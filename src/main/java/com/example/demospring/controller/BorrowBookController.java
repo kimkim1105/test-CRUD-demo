@@ -7,15 +7,14 @@ import com.example.demospring.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/borrowbooks")
@@ -26,8 +25,7 @@ public class BorrowBookController {
     IBookService bookService;
     @Autowired
     IStudentService studentService;
-    List<BookDTO> bookDTOList = new ArrayList<>();
-    List<StudentDTO> studentDTOList = new ArrayList<>();
+
     @GetMapping
     public String getListBorrowBook(Model model, @RequestParam(required = false, name = "search") String search,@PageableDefault(value = 5) Pageable pageable ){
         BorrowBook order = new BorrowBook();
@@ -180,6 +178,17 @@ public class BorrowBookController {
         model.addAttribute("countBookOfBorrow", bookList1.size());
         model.addAttribute("countStudentOfFree", studentList.size());
         model.addAttribute("countStudentOfBorrow", studentList1.size());
+        Map<LocalDate, Integer> data = new LinkedHashMap<LocalDate, Integer>();
+        data.put(LocalDate.now().minusDays(6), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(6)));
+        data.put(LocalDate.now().minusDays(5), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(5)));
+        data.put(LocalDate.now().minusDays(4), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(4)));
+        data.put(LocalDate.now().minusDays(3), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(3)));
+        data.put(LocalDate.now().minusDays(2), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(2)));
+        data.put(LocalDate.now().minusDays(1), borrowBookService.countOrderByDateBorrow(LocalDate.now().minusDays(1)));
+        data.put(LocalDate.now(), borrowBookService.countOrderByDateBorrow(LocalDate.now()));
+        model.addAttribute("keySet", data.keySet());
+        System.out.println("in ra keySet"+data.keySet());
+        model.addAttribute("values", data.values());
         return "borrow/statistics";
     }
     @GetMapping("/student")
@@ -239,6 +248,47 @@ public class BorrowBookController {
             return "redirect:/borrowbooks";
         }
     }
+//    @PostMapping("/addOrder")
+//    public ResponseEntity<?> addOrder(Model model, @RequestParam String studentId, @RequestParam String bookId, @PageableDefault(value = 5) Pageable pageable ){
+//        List<Book> bookList = (List<Book>) bookService.getListFreeBook();
+//        List<Student> studentList = (List<Student>) studentService.getListFreeStudent();
+//        BorrowBook order = new BorrowBook();
+////        model.addAttribute("order", order);
+//        try {
+//            if (!studentId.isEmpty()&&!bookId.isEmpty()){
+//                if (bookList.contains(bookService.findById(Long.valueOf(bookId)).get())&&studentList.contains(studentService.findById(Long.valueOf(studentId)).get())){
+//                    Book book = bookService.findById(Long.valueOf(bookId)).get();
+//                    book.setActive("borrowing");
+//                    bookService.save(book);
+//                    Student student = studentService.findById(Long.valueOf(studentId)).get();
+//                    student.setActive("borrowing");
+//                    studentService.save(student);
+//                    order.setStatus(true);
+//                    order.setBook(bookService.findById(Long.valueOf(bookId)).get());
+//                    order.setStudent(studentService.findById(Long.valueOf(studentId)).get());
+//                    order.setDate(LocalDate.now());
+//                    order.setType("processing");
+//                    borrowBookService.save(order);
+//                    model.addAttribute("addmess","Add new order success");
+//                    model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
+//                    return new  ResponseEntity<>("ok", HttpStatus.OK);
+//                }else {
+//                    model.addAttribute("addmess","Book Id or Student Id was borrow or not valid");
+//                    model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
+//                    return new  ResponseEntity<>("invalid", HttpStatus.OK);
+//                }
+//            }else {
+//                model.addAttribute("addmess","Book Id and Student Id are nesscessary");
+//                model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
+//                return new  ResponseEntity<>("lack", HttpStatus.OK);
+//            }
+//        }
+//        catch (Exception e){
+//            model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
+//            model.addAttribute("addmess","Book Id and Student Id are nesscessary");
+//            return new  ResponseEntity<>("lack", HttpStatus.OK);
+//        }
+//    }
 
     @RequestMapping(value = "/returnOrder", method = {RequestMethod.PUT, RequestMethod.GET})
     public String returnOrder(Model model, @ModelAttribute BorrowBook order,@PageableDefault(value = 5) Pageable pageable ) {

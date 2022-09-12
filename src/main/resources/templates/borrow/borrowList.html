@@ -123,7 +123,7 @@
 
             <form class="form-inline col-sm-12" th:action="@{/borrowbooks/addOrder}"
                   method="POST">
-                <div class="col-sm-12"><p style="color: red" th:if="${addmess}" th:utext="${addmess}"></p></div>
+                <div class="col-sm-12"><p style="color: red" id="addmess" th:if="${addmess}" th:utext="${addmess}"></p></div>
                 <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="studentId" name="studentId"
                                              placeholder="Student Id"
                                              aria-label="first" style="width: 100%;"></div>
@@ -292,6 +292,7 @@
         // var href = 'http://localhost:8080/borrowbooks/addOrder?studentId='+studentId+'&bookId='+bookId;
         // console.log(studentId+ "        "+bookId)
         // $.post(href, function (order, status) {
+        //     event.preventDefault();
         //     console.log(order)
         // })
         $('.table .btn-danger').on('click', function (event) {

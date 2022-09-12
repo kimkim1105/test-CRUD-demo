@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,8 @@ public class BorrowBookService implements IBorrowBookService{
     }
 
     @Override
-    public void save(BorrowBook borrowBook) {
-borrowBookRepository.save(borrowBook);
+    public BorrowBook save(BorrowBook borrowBook) {
+ return borrowBookRepository.save(borrowBook);
     }
 
     @Override
@@ -51,5 +52,10 @@ borrowBookRepository.deleteById(id);
     @Override
     public Page<BorrowBook> searchByBookOrStudent(String search, Pageable pageable) {
         return borrowBookRepository.searchByBookOrStudent(search, pageable);
+    }
+
+    @Override
+    public Integer countOrderByDateBorrow(LocalDate localDate) {
+        return borrowBookRepository.countOrderByDateBorrow(localDate);
     }
 }
