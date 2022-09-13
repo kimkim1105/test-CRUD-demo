@@ -22,6 +22,7 @@ public class BookController {
     public String getBookList(Model model, @RequestParam(required = false, name = "search") String search,@PageableDefault(value = 5) Pageable pageable){
         Book book = new Book();
         model.addAttribute("book", book);
+        // commit
         try {
             if (!search.isEmpty()&&search!=null){
                 model.addAttribute("books", bookService.findAllByNameContainingAndStatusIsTrueOrderByIdDesc(search,pageable));
