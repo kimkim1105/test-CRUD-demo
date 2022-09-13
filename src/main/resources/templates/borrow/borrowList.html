@@ -368,18 +368,8 @@
             event.preventDefault();
             var href = $(this).attr('href');
             $.get(href, function (order, status) {
-                // var link = "http://localhost:8080/borrowbooks/listOrderCompleted?id=" + order.id;
-                // $.get(link, function (check, status) {
-                //     if (check) {
-                //         // console.log(" vao duoc if k")
-                //         $('#delete-order-info').html("Order completed, can't edit");
-                //         $('#delete-order-confirm').hide();
-                //     } else {
                         $('#return-order-id').val(order.id);
                         console.log("id laf bn", order.id)
-                        // $('#order-student-name').val(order.student);
-                        // $('#order-book-name').val(order.book);
-                        // $('#order-dat').val(order.date);
                         $('#return-order-student-name').html(order.student.name);
                         $('#return-order-book-name').html(order.book.name);
                         $('#return-order-date').html(order.date);
