@@ -1,10 +1,8 @@
 package com.example.demospring.controller;
 
 import com.example.demospring.model.Book;
-import com.example.demospring.model.Student;
 import com.example.demospring.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;

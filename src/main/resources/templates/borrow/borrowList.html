@@ -332,6 +332,7 @@
                 if (check){
                     $('#add-order').submit();
                 }else {
+                    event.preventDefault();
                     $('#addmess').html("Book Id or Student Id was borrow or not valid")
                     $('#bookId').val("");
                     $('#bookId').placeholder="Book id";

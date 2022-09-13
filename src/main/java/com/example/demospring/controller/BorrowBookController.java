@@ -344,13 +344,13 @@ public class BorrowBookController {
     @RequestMapping(value = "/deleteOrder", method = {RequestMethod.PUT, RequestMethod.GET})
     public String deleteOrder(Model model, @ModelAttribute BorrowBook order,@PageableDefault(value = 5) Pageable pageable ){
         if (order.getNote()!= null&&!order.getNote().isEmpty()){
-            Book book = bookService.findById(order.getBook().getId()).get();
+            BorrowBook order1 = borrowBookService.findById(order.getId()).get();
+            Book book = bookService.findById(order1.getBook().getId()).get();
             book.setActive("free");
             bookService.save(book);
-            Student student = studentService.findById(Long.valueOf(order.getStudent().getId())).get();
+            Student student = studentService.findById(Long.valueOf(order1.getStudent().getId())).get();
             student.setActive("free");
             studentService.save(student);
-            BorrowBook order1 = borrowBookService.findById(order.getId()).get();
             order1.setStatus(false);
             order1.setType("nousing");
             order1.setNote(order.getNote());
