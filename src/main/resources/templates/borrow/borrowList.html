@@ -96,6 +96,8 @@
                aria-selected="false" th:href="@{/borrowbooks/bookFree}" >List Book</a>
             <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
                aria-selected="false" th:href="@{/borrowbooks/student}">List Student</a>
+            <a class="nav-link admin-nav-item admin-sidebar-item" role="tab"
+               aria-selected="false" th:href="@{/borrowbooks/statistics}">Statistics</a>
         </div>
     </div>
 
@@ -121,31 +123,24 @@
             </form>
             <br><br>
 
-            <form class="form-inline col-sm-12" th:action="@{/borrowbooks/addOrder}"
-                  method="POST">
-                <div class="col-sm-12"><p style="color: red" id="addmess" th:if="${addmess}" th:utext="${addmess}"></p></div>
-                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="studentId" name="studentId"
-                                             placeholder="Student Id"
-                                             aria-label="first" style="width: 100%;"></div>
-                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="bookId" name="bookId"
-                                             placeholder="Book Id"
-                                             aria-label="last" style="width: 100%;"></div>
-                <div class="col-sm-4">
-                    <ul class="nav nav-pills nav-fill">
-                        <li class="nav-item">
-                            <button class="nav-link admin-filter-button text-uppercase" type="submit">Create</button>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-
-<!--            <form class="form-inline col-sm-12" th:action="@{/borrowbooks/quicksearch}">-->
-<!--                <select name="quick" id="quick-search">-->
-<!--                    <option value="nosearch">Quick search</option>-->
-<!--                    <option value="completed">Order completed</option>-->
-<!--                    <option value="uncompleted">Order uncompleted</option>-->
-<!--                </select>-->
+<!--            <form class="form-inline col-sm-12" th:action="@{/borrowbooks/addOrder}"-->
+<!--                  method="POST">-->
+<!--                <div class="col-sm-12"><p style="color: red" th:if="${mess}" th:utext="${mess}"></p></div>-->
+<!--                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="studentId" name="studentId"-->
+<!--                                             placeholder="Student Id"-->
+<!--                                             aria-label="first" style="width: 100%;"></div>-->
+<!--                <div class="col-sm-4"><input class="form-control mr-sm-2" type="text" id="bookId" name="bookId"-->
+<!--                                             placeholder="Book Id"-->
+<!--                                             aria-label="last" style="width: 100%;"></div>-->
+<!--                <div class="col-sm-4">-->
+<!--                    <ul class="nav nav-pills nav-fill">-->
+<!--                        <li class="nav-item">-->
+<!--                            <button class="nav-link admin-filter-button text-uppercase" type="submit">Create</button>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
 <!--            </form>-->
+
         </nav>
         <div></div>
         <span style="color: red; margin-top:5px" id="validate"></span>
@@ -153,6 +148,10 @@
         <table class="table table-striped">
             <thead>
             <th colspan="4">Order Information</th>
+            <th></th>
+            <th>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addOrderModal">Add new order</button>
+            </th>
             </thead>
             <thead>
             <tr>
@@ -185,6 +184,39 @@
     </div>
 </div>
 
+
+<!--add order modal-->
+<div class="modal fade" id="addOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form th:action="@{/borrowbooks/addOrder}"
+              th:object="${order}" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addOrderModalLabel">Add order form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12"><p style="color: red" id="addmess"></p></div>
+                    <div class="form-group">
+                        <label class="col-form-label">Student Id:</label>
+                        <input type="text" placeholder="Student Id" class="form-control" id="studentId" name="studentId" th:required="required" >
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Book Id:</label>
+                        <input type="text" placeholder="Book Id" class="form-control" oninput="showvalue()" id="bookId" name="bookId" th:required="required" >
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="add-order">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- delete order Modal -->
 <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -282,19 +314,32 @@
 
 <th:block th:replace="share/footer :: footer"></th:block>
 
-<script>
+<script th:inline="javascript">
     function reloadpage() {
         window.location.reload();
     }
+    function showvalue(){
+        let bookId = $('#bookId').val();
+        console.log("bookId", bookId)
+    }
     $(document).ready(function (){
-        // let studentId = $('#studentId').val();
-        // let bookId = $('#bookId').val();
-        // var href = 'http://localhost:8080/borrowbooks/addOrder?studentId='+studentId+'&bookId='+bookId;
-        // console.log(studentId+ "        "+bookId)
-        // $.post(href, function (order, status) {
-        //     event.preventDefault();
-        //     console.log(order)
-        // })
+        $('#add-order').on('click', function (event) {
+            // event.preventDefault();
+            let bookId = $('#bookId').val();
+            let studentId = $('#studentId').val();
+            var link = "http://localhost:8080/borrowbooks/checkOrderInput?bookId="+bookId+"&studentId="+studentId
+            $.get(link, function (check){
+                if (check){
+                    $('#add-order').submit();
+                }else {
+                    $('#addmess').html("Book Id or Student Id was borrow or not valid")
+                    $('#bookId').val("");
+                    $('#bookId').placeholder="Book id";
+                    $('#studentId').val("");
+                    $('#studentId').placeholder = "student id";
+                }
+            })
+        })
         $('.table .btn-danger').on('click', function (event) {
             event.preventDefault();
             var href = $(this).attr('href');

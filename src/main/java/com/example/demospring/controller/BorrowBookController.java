@@ -207,6 +207,21 @@ public class BorrowBookController {
         }
     }
 
+    @GetMapping("/checkOrderInput")
+    @ResponseBody
+    public Boolean getFree(String bookId, String studentId){
+        List<Book> bookList = (List<Book>) bookService.getListFreeBook();
+        List<Student> studentList = (List<Student>) studentService.getListFreeStudent();
+        try {
+            if (bookList.contains(bookService.findById(Long.valueOf(bookId)).get())&&studentList.contains(studentService.findById(Long.valueOf(studentId)).get())){
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
     @PostMapping("/addOrder")
     public String addOrder(Model model, @RequestParam String studentId, @RequestParam String bookId,@PageableDefault(value = 5) Pageable pageable ){
         List<Book> bookList = (List<Book>) bookService.getListFreeBook();
@@ -228,26 +243,27 @@ public class BorrowBookController {
                 order.setDate(LocalDate.now());
                 order.setType("processing");
                 borrowBookService.save(order);
-                model.addAttribute("addmess","Add new order success");
+                model.addAttribute("mess","Add new order success");
                 model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
                 return "redirect:/borrowbooks";
             }else {
-                model.addAttribute("addmess","Book Id or Student Id was borrow or not valid");
+                model.addAttribute("mess","Book Id or Student Id was borrow or not valid");
                 model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
                 return "redirect:/borrowbooks";
             }
         }else {
-            model.addAttribute("addmess","Book Id and Student Id are nesscessary");
+            model.addAttribute("mess","Book Id and Student Id are nesscessary");
                 model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
                 return "redirect:/borrowbooks";
         }
         }
         catch (Exception e){
             model.addAttribute("borrowbooks", borrowBookService.findAllByStatusIsTrueOrderByDateDesc(pageable));
-            model.addAttribute("addmess","Book Id and Student Id are nesscessary");
+            model.addAttribute("mess","Book Id and Student Id are nesscessary");
             return "redirect:/borrowbooks";
         }
     }
+
 //    @PostMapping("/addOrder")
 //    public ResponseEntity<?> addOrder(Model model, @RequestParam String studentId, @RequestParam String bookId, @PageableDefault(value = 5) Pageable pageable ){
 //        List<Book> bookList = (List<Book>) bookService.getListFreeBook();
