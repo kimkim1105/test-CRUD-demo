@@ -66,12 +66,7 @@ public class BookController {
         Optional<Book> book = bookService.findById(id);
         return book;
     }
-//    @GetMapping("/updateBook/{id}")
-//    public String updateBookForm(Model model, @PathVariable Long id){
-//        Book book = bookService.findById(id).get();
-//        model.addAttribute("book", book);
-//        return "book/updateBook";
-//    }
+
     @RequestMapping(value = "/updateBook", method = {RequestMethod.PUT, RequestMethod.GET})
     public String updateBook(Model model, @ModelAttribute Book book,@PageableDefault(value = 5) Pageable pageable){
         if (book!=null&&!book.getName().isEmpty()){
